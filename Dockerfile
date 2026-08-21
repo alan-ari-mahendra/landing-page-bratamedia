@@ -5,7 +5,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 # ── Stage 1: Install deps ───────────────────────────────────────────────────
 FROM base AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml .npmrc pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # ── Stage 2: Build ──────────────────────────────────────────────────────────
