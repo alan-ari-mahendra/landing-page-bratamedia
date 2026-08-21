@@ -1,0 +1,40 @@
+services:
+  bratamedia:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL}
+    container_name: bratamedia-app
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+      - CRON_SECRET=${CRON_SECRET}
+      - PREVIEW_SECRET=${PREVIEW_SECRET}
+    volumes:
+      - media_uploads:/app/public/media
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bratamedia.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.bratamedia.entrypoints=websecure"
+      - "traefik.http.routers.bratamedia.tls=true"
+      - "traefik.http.routers.bratamedia.tls.certresolver=letsencrypt"
+      - "traefik.http.services.bratamedia.loadbalancer.server.port=3000"
+      # Redirect HTTP → HTTPS
+      - "traefik.http.routers.bratamedia-http.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.bratamedia-http.entrypoints=web"
+      - "traefik.http.routers.bratamedia-http.middlewares=redirect-to-https"
+
+volumes:
+  media_uploads:
+
+networks:
+  traefik-net:
+    external: true
+    name: ${TRAEFIK_NETWORK}
