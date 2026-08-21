@@ -1,7 +1,10 @@
+import Link from 'next/link'
 import Navbar from './Navbar'
+import Footer from './Footer'
 import ServicesCarousel from './ServicesCarousel'
 import FAQSection from './FAQSection'
 import FloatingButtons from './FloatingButtons'
+import { PORTFOLIO_ITEMS } from '@/components/Portfolio/data'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
@@ -410,37 +413,40 @@ export default function LandingPage() {
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                { tag: 'E-COMMERCE', title: 'Toko Online Modern', desc: 'Platform belanja daring yang memudahkan transaksi pelanggan secara aman.' },
-                { tag: 'CORPORATE', title: 'Portal Perusahaan', desc: 'Pusat informasi digital terintegrasi untuk meningkatkan kredibilitas bisnis.' },
-                { tag: 'APLIKASI', title: 'Sistem Manajemen', desc: 'Solusi perangkat lunak untuk mengelola operasional internal secara efisien.' },
-              ].map(({ tag, title, desc }) => (
-                <div
-                  key={tag}
-                  className="bg-white border border-[#E3E5E1] rounded-xl overflow-hidden shadow-sm"
+              {PORTFOLIO_ITEMS.slice(0, 3).map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/portofolio/${item.slug}`}
+                  className="bg-white border border-[#E3E5E1] rounded-xl overflow-hidden shadow-sm group hover:-translate-y-2 transition-transform duration-300 hover:shadow-lg block"
                 >
-                  <div className="aspect-[16/10] bg-[#e2e2e2] w-full" />
+                  <div className="relative aspect-[16/10] overflow-hidden bg-[#F2F3F1]">
+                    <div
+                      className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                      style={{ backgroundImage: `url(${item.image})` }}
+                    />
+                  </div>
                   <div className="p-6">
                     <span
                       className="inline-block px-3 py-1 bg-[#FBE4D9] text-[#E8592C] text-xs font-bold rounded-full mb-3 uppercase"
                       style={H}
                     >
-                      {tag}
+                      {item.category}
                     </span>
-                    <h3 className="font-bold text-lg text-[#1a1c1c] mb-2" style={H}>{title}</h3>
-                    <p className="text-[#6E766F] text-[15px] leading-[24px]" style={B}>{desc}</p>
+                    <h3 className="font-bold text-lg text-[#1a1c1c] mb-2 group-hover:text-[#E8592C] transition-colors" style={H}>{item.title}</h3>
+                    <p className="text-[#6E766F] text-[15px] leading-[24px]" style={B}>{item.desc}</p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             <div className="flex justify-center mt-12">
-              <button
+              <Link
+                href="/portofolio"
                 className="bg-white border border-[#E3E5E1] hover:border-[#E8592C] hover:text-[#E8592C] text-[#59413a] text-[16px] font-semibold px-8 py-4 rounded-xl transition-colors inline-flex items-center gap-2"
                 style={H}
               >
                 Lihat Semua Portofolio
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -645,54 +651,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* ── Footer ── */}
-      <footer className="bg-[#f9f9f8] border-t border-[#E3E5E1] pt-16 pb-8 px-6">
-        <div className="max-w-[1180px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div>
-              <div className="flex items-center gap-2 text-xl font-bold text-[#1a1c1c] mb-4" style={H}>
-                Bratamedia
-                <div className="w-2 h-2 bg-[#E8592C] mt-1" />
-              </div>
-              <p className="text-[#6E766F] text-sm mb-4" style={B}>
-                Partner digital terpercaya Anda sejak 2013.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-[#1a1c1c] mb-4" style={H}>Layanan</h4>
-              <ul className="space-y-2 text-sm text-[#6E766F]" style={B}>
-                {['Pembuatan Website','Pengembangan Aplikasi','Digital Marketing','Desain UI/UX'].map((l) => (
-                  <li key={l}><a className="hover:text-[#E8592C] transition-colors" href="#">{l}</a></li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-[#1a1c1c] mb-4" style={H}>Perusahaan</h4>
-              <ul className="space-y-2 text-sm text-[#6E766F]" style={B}>
-                {['Tentang Kami','Portofolio','Karir','Blog'].map((l) => (
-                  <li key={l}><a className="hover:text-[#E8592C] transition-colors" href="#">{l}</a></li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-[#1a1c1c] mb-4" style={H}>Kontak</h4>
-              <p className="text-sm text-[#6E766F]" style={B}>
-                Jl. Tanjungsari 1 No. 18,
-                <br />
-                Semarang, Jawa Tengah
-                <br />
-                <br />
-                halo@bratamedia.com
-                <br />
-                +62 812-3456-7890
-              </p>
-            </div>
-          </div>
-          <div className="border-t border-[#E3E5E1] pt-8 text-center text-sm text-[#6E766F]" style={B}>
-            © 2024 Bratamedia. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <FloatingButtons />
     </div>

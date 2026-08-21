@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import Navbar from '@/components/LandingPage/Navbar'
+import Footer from '@/components/LandingPage/Footer'
 import FloatingButtons from '@/components/LandingPage/FloatingButtons'
 import BlogContent from './BlogContent'
 
@@ -131,88 +131,7 @@ export default function BlogPage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-[#F2F3F1] border-t border-[#E3E5E1] py-[100px]">
-        <div className="max-w-[1180px] mx-auto px-5 md:px-6 grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div className="md:col-span-4 flex flex-col gap-6">
-            <div
-              className="text-[36px] font-bold text-[#1a1c1c] flex items-center gap-2"
-              style={H}
-            >
-              Bratamedia
-              <div className="w-2 h-2 bg-[#E8592C] mt-2" />
-            </div>
-            <p className="text-[#6E766F] text-[15px] leading-[24px]" style={B}>
-              Membangun ekosistem digital yang kuat untuk pertumbuhan bisnis berkelanjutan di era
-              modern.
-            </p>
-            <p className="text-[#6E766F] text-[15px] mt-auto" style={B}>
-              © 2024 Bratamedia. Seluruh Hak Cipta Dilindungi.
-            </p>
-          </div>
-          <div className="md:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-4 mt-8 md:mt-0">
-            <div className="flex flex-col gap-4">
-              <h4 className="font-bold text-[#1a1c1c] mb-2" style={H}>
-                Navigasi
-              </h4>
-              {[
-                { label: 'Beranda', href: '/' },
-                { label: 'Layanan', href: '/#layanan' },
-                { label: 'Portfolio', href: '/#portofolio' },
-                { label: 'Blog', href: '/blog', active: true },
-                { label: 'Tentang', href: '#' },
-                { label: 'Kontak', href: '/#hubungi-kami' },
-              ].map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className={`text-[15px] transition-colors ${
-                    item.active
-                      ? 'text-[#E8592C] font-semibold'
-                      : 'text-[#6E766F] hover:text-[#1a1c1c]'
-                  }`}
-                  style={B}
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
-            <div className="flex flex-col gap-4">
-              <h4 className="font-bold text-[#1a1c1c] mb-2" style={H}>
-                Layanan
-              </h4>
-              {['Web Development', 'UI/UX Design', 'Digital Marketing', 'Brand Identity'].map(
-                (item) => (
-                  <a
-                    key={item}
-                    href="#"
-                    className="text-[15px] text-[#6E766F] hover:text-[#1a1c1c] transition-colors"
-                    style={B}
-                  >
-                    {item}
-                  </a>
-                ),
-              )}
-            </div>
-            <div className="flex flex-col gap-4 col-span-2 md:col-span-1">
-              <h4 className="font-bold text-[#1a1c1c] mb-2" style={H}>
-                Sosial Media
-              </h4>
-              <div className="flex gap-4">
-                {['link', 'share', 'mail'].map((icon) => (
-                  <a
-                    key={icon}
-                    href="#"
-                    className="w-10 h-10 rounded-full bg-white border border-[#E3E5E1] flex items-center justify-center text-[#1a1c1c] hover:text-[#E8592C] hover:border-[#E8592C] transition-colors shadow-[0_4px_20px_rgba(18,22,19,0.04)]"
-                  >
-                    <span className="material-symbols-outlined text-[20px]">{icon}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer activePage="Blog" />
 
       <FloatingButtons />
     </>
