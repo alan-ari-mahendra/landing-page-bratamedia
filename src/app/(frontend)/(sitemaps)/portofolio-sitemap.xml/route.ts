@@ -3,7 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
 
-const getPostsSitemap = unstable_cache(
+const getPortfolioSitemap = unstable_cache(
   async () => {
     const payload = await getPayload({ config })
     const SITE_URL =
@@ -12,17 +12,10 @@ const getPostsSitemap = unstable_cache(
       'https://example.com'
 
     const results = await payload.find({
-      collection: 'posts',
-      overrideAccess: false,
-      draft: false,
+      collection: 'portfolios',
       depth: 0,
       limit: 1000,
       pagination: false,
-      where: {
-        _status: {
-          equals: 'published',
-        },
-      },
       select: {
         slug: true,
         updatedAt: true,
@@ -31,25 +24,20 @@ const getPostsSitemap = unstable_cache(
 
     const dateFallback = new Date().toISOString()
 
-    const sitemap = results.docs
-      ? results.docs
-          .filter((post) => Boolean(post?.slug))
-          .map((post) => ({
-            loc: `${SITE_URL}/blog/${post?.slug}`,
-            lastmod: post.updatedAt || dateFallback,
-          }))
-      : []
-
-    return sitemap
+    return results.docs
+      .filter((item) => Boolean(item?.slug))
+      .map((item) => ({
+        loc: `${SITE_URL}/portofolio/${item.slug}`,
+        lastmod: item.updatedAt || dateFallback,
+      }))
   },
-  ['posts-sitemap'],
+  ['portofolio-sitemap'],
   {
-    tags: ['posts-sitemap'],
+    tags: ['portofolio-sitemap'],
   },
 )
 
 export async function GET() {
-  const sitemap = await getPostsSitemap()
-
+  const sitemap = await getPortfolioSitemap()
   return getServerSideSitemap(sitemap)
 }

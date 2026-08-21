@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: 'Blog - Bratamedia',
   description:
     'Tips praktis, studi kasus, dan perkembangan teknologi yang relevan untuk pertumbuhan bisnis Anda.',
+  openGraph: {
+    title: 'Blog - Bratamedia',
+    description:
+      'Tips praktis, studi kasus, dan perkembangan teknologi yang relevan untuk pertumbuhan bisnis Anda.',
+    url: '/blog',
+    type: 'website',
+  },
+  alternates: { canonical: '/blog' },
 }
 
 export default function Page() {

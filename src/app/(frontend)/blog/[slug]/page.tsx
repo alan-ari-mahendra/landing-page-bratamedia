@@ -18,6 +18,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post ? `${post.title} - Blog Bratamedia` : 'Blog - Bratamedia',
     description: post?.excerpt ?? undefined,
+    openGraph: post
+      ? {
+          title: `${post.title} - Blog Bratamedia`,
+          description: post.excerpt ?? undefined,
+          url: `/blog/${slug}`,
+          type: 'article',
+          publishedTime: post.publishedAt ?? undefined,
+          images: post.heroImageUrl ? [{ url: post.heroImageUrl, width: 1200, height: 630 }] : [],
+        }
+      : undefined,
+    alternates: { canonical: `/blog/${slug}` },
   }
 }
 

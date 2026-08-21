@@ -3,14 +3,19 @@ import { getServerSideURL } from './getURL'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'An open-source website built with Payload and Next.js.',
+  description:
+    'Jasa pengembangan web, mobile app, dan solusi digital untuk bisnis di Indonesia.',
   images: [
     {
-      url: `${getServerSideURL()}/website-template-OG.webp`,
+      url: `${getServerSideURL()}/og-default.png`,
+      width: 1200,
+      height: 630,
+      alt: 'Bratamedia - Solusi Digital untuk Bisnis Anda',
     },
   ],
-  siteName: 'Payload Website Template',
-  title: 'Payload Website Template',
+  siteName: 'Bratamedia',
+  title: 'Bratamedia - Solusi Digital untuk Bisnis Anda',
+  locale: 'id_ID',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {
