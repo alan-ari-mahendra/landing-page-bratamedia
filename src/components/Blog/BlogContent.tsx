@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
@@ -10,6 +11,7 @@ const CATEGORIES = ['Semua', 'Tips Bisnis', 'Teknologi', 'Studi Kasus', 'Berita 
 const posts = [
   {
     id: 1,
+    slug: '5-tanda-website-sudah-waktunya-diperbarui',
     category: 'Tips Bisnis',
     title: '5 Tanda Website Anda Sudah Waktunya Diperbarui',
     excerpt:
@@ -24,6 +26,7 @@ const posts = [
   },
   {
     id: 2,
+    slug: 'digitalisasi-pendaftaran-pasien-klinik-swasta',
     category: 'Studi Kasus',
     title: 'Studi Kasus: Digitalisasi Pendaftaran Pasien di Klinik Swasta',
     excerpt: 'Mengurangi antrean hingga 50% dengan sistem booking online yang terintegrasi.',
@@ -37,6 +40,7 @@ const posts = [
   },
   {
     id: 3,
+    slug: 'kapan-bisnis-butuh-aplikasi-mobile',
     category: 'Tips Bisnis',
     title: 'Kapan Bisnis Anda Butuh Aplikasi Mobile, Bukan Sekadar Website?',
     excerpt:
@@ -51,6 +55,7 @@ const posts = [
   },
   {
     id: 4,
+    slug: 'mengenal-ai-automation-untuk-bisnis-kecil',
     category: 'Teknologi',
     title: 'Mengenal AI Automation dan Manfaatnya untuk Bisnis Kecil',
     excerpt:
@@ -65,6 +70,7 @@ const posts = [
   },
   {
     id: 5,
+    slug: 'bratamedia-kini-melayani-klien-luar-jawa-tengah',
     category: 'Berita Bratamedia',
     title: 'Bratamedia Kini Melayani Klien di Luar Jawa Tengah',
     excerpt:
@@ -79,6 +85,7 @@ const posts = [
   },
   {
     id: 6,
+    slug: 'perbedaan-landing-page-dan-company-profile',
     category: 'Tips Bisnis',
     title: 'Perbedaan Landing Page dan Company Profile, Mana yang Anda Butuhkan?',
     excerpt:
@@ -123,8 +130,9 @@ export default function BlogContent() {
         {/* Article Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.map((post) => (
-            <article
+            <Link
               key={post.id}
+              href={`/blog/${post.slug}`}
               className="bg-white rounded-xl border border-[#E3E5E1] shadow-[0_4px_20px_rgba(18,22,19,0.04)] overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-lg flex flex-col"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
@@ -169,7 +177,7 @@ export default function BlogContent() {
                   </div>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 

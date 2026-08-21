@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Navbar from '@/components/LandingPage/Navbar'
 import FloatingButtons from '@/components/LandingPage/FloatingButtons'
 import BlogContent from './BlogContent'
@@ -6,6 +7,7 @@ const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
 
 const FEATURED = {
+  slug: 'transformasi-digital-klinik-xyz-efisiensi-70-persen',
   category: 'Studi Kasus',
   title: 'Transformasi Digital: Bagaimana Klinik XYZ Meningkatkan Efisiensi 70%',
   excerpt:
@@ -24,7 +26,7 @@ export default function BlogPage() {
     <>
       <Navbar />
 
-      <main className="flex-grow pt-20">
+      <main className="flex-grow pt-20 bg-[#f9f9f8]">
         {/* Hero */}
         <section className="max-w-[1180px] mx-auto px-5 md:px-6 pt-[100px] pb-16">
           <div className="max-w-3xl">
@@ -49,7 +51,7 @@ export default function BlogPage() {
 
         {/* Featured Post */}
         <section className="max-w-[1180px] mx-auto px-5 md:px-6 mb-20">
-          <article className="bg-white rounded-xl border border-[#E3E5E1] shadow-[0_4px_20px_rgba(18,22,19,0.04)] overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-lg flex flex-col md:flex-row">
+          <Link href={`/blog/${FEATURED.slug}`} className="bg-white rounded-xl border border-[#E3E5E1] shadow-[0_4px_20px_rgba(18,22,19,0.04)] overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-lg flex flex-col md:flex-row">
             <div className="md:w-[55%] relative h-64 md:h-auto">
               <div
                 className="bg-cover bg-center w-full h-full absolute inset-0"
@@ -92,7 +94,7 @@ export default function BlogPage() {
                 </div>
               </div>
             </div>
-          </article>
+          </Link>
         </section>
 
         {/* Filter + Grid */}
