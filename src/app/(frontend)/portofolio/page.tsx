@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import PortfolioPage from '@/components/Portfolio'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Portofolio - Bratamedia',
   description:

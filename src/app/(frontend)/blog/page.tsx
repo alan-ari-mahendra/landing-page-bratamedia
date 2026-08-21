@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import BlogPage from '@/components/Blog'
 
+export const revalidate = 60 // 1 menit
+
 export const metadata: Metadata = {
   title: 'Blog - Bratamedia',
   description:

@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { anyone } from '../../access/anyone'
 import { slugField } from 'payload'
+import { revalidatePortfolio, revalidatePortfolioDelete } from './hooks/revalidatePortfolio'
 
 export const Portfolios: CollectionConfig = {
   slug: 'portfolios',
@@ -109,4 +110,8 @@ export const Portfolios: CollectionConfig = {
     },
     slugField(),
   ],
+  hooks: {
+    afterChange: [revalidatePortfolio],
+    afterDelete: [revalidatePortfolioDelete],
+  },
 }
