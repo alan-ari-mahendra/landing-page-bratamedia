@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    portfolios: Portfolio;
     media: Media;
     categories: Category;
     users: User;
@@ -91,6 +92,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    portfolios: PortfoliosSelect<false> | PortfoliosSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -112,10 +114,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'contact-info': ContactInfo;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'contact-info': ContactInfoSelect<false> | ContactInfoSelect<true>;
   };
   locale: null;
   widgets: {
@@ -228,6 +232,9 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
+  heroImageUrl?: string | null;
+  excerpt?: string | null;
+  readTime?: string | null;
   content: {
     root: {
       type: string;
@@ -774,6 +781,56 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolios".
+ */
+export interface Portfolio {
+  id: number;
+  title: string;
+  category: string;
+  desc: string;
+  imageUrl?: string | null;
+  heroImage?: (number | null) | Media;
+  client?: string | null;
+  duration?: string | null;
+  challenge?:
+    | {
+        paragraph: string;
+        id?: string | null;
+      }[]
+    | null;
+  solution?: string | null;
+  solutionImageUrl?: string | null;
+  solutionImage?: (number | null) | Media;
+  stats?:
+    | {
+        value: string;
+        label: string;
+        sub?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  testimonial?: {
+    quote?: string | null;
+    initials?: string | null;
+    name?: string | null;
+    role?: string | null;
+  };
+  tech?:
+    | {
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -969,6 +1026,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'portfolios';
+        value: number | Portfolio;
       } | null)
     | ({
         relationTo: 'media';
@@ -1186,6 +1247,9 @@ export interface FormBlockSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
+  heroImageUrl?: T;
+  excerpt?: T;
+  readTime?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;
@@ -1209,6 +1273,54 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolios_select".
+ */
+export interface PortfoliosSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  desc?: T;
+  imageUrl?: T;
+  heroImage?: T;
+  client?: T;
+  duration?: T;
+  challenge?:
+    | T
+    | {
+        paragraph?: T;
+        id?: T;
+      };
+  solution?: T;
+  solutionImageUrl?: T;
+  solutionImage?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        sub?: T;
+        id?: T;
+      };
+  testimonial?:
+    | T
+    | {
+        quote?: T;
+        initials?: T;
+        name?: T;
+        role?: T;
+      };
+  tech?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1682,6 +1794,18 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-info".
+ */
+export interface ContactInfo {
+  id: number;
+  email: string;
+  phone: string;
+  location?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1722,6 +1846,18 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-info_select".
+ */
+export interface ContactInfoSelect<T extends boolean = true> {
+  email?: T;
+  phone?: T;
+  location?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

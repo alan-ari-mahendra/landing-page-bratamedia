@@ -82,6 +82,21 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'media',
             },
             {
+              name: 'heroImageUrl',
+              type: 'text',
+              label: 'Hero Image URL (external)',
+            },
+            {
+              name: 'excerpt',
+              type: 'textarea',
+              label: 'Excerpt (for listing card)',
+            },
+            {
+              name: 'readTime',
+              type: 'text',
+              label: 'Read Time (e.g. "5 menit baca")',
+            },
+            {
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({

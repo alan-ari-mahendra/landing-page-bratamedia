@@ -2,25 +2,28 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { PORTFOLIO_ITEMS, PORTFOLIO_CATEGORIES } from './data'
+import type { Portfolio } from '@/payload-types'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
 
-export default function PortfolioContent() {
+type Props = {
+  items: Portfolio[]
+  categories: string[]
+}
+
+export default function PortfolioContent({ items, categories }: Props) {
   const [activeCategory, setActiveCategory] = useState('Semua')
 
   const filtered =
-    activeCategory === 'Semua'
-      ? PORTFOLIO_ITEMS
-      : PORTFOLIO_ITEMS.filter((p) => p.category === activeCategory)
+    activeCategory === 'Semua' ? items : items.filter((p) => p.category === activeCategory)
 
   return (
     <>
       {/* Sticky Filter Bar */}
       <div className="sticky top-20 bg-[#f9f9f8]/90 backdrop-blur-md border-b border-[#E3E5E1] py-4 z-40 overflow-x-auto">
         <div className="max-w-[1180px] mx-auto px-5 md:px-6 flex gap-3 min-w-max">
-          {PORTFOLIO_CATEGORIES.map((cat) => (
+          {['Semua', ...categories].map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -49,9 +52,12 @@ export default function PortfolioContent() {
               <div className="relative aspect-[16/10] overflow-hidden bg-[#F2F3F1]">
                 <div
                   className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                  style={{ backgroundImage: `url(${item.image})` }}
+                  style={{ backgroundImage: `url(${item.imageUrl ?? ''})` }}
                 />
-                <div className="absolute top-4 left-4 bg-[#E8592C] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" style={H}>
+                <div
+                  className="absolute top-4 left-4 bg-[#E8592C] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"
+                  style={H}
+                >
                   {item.category}
                 </div>
               </div>

@@ -4,12 +4,25 @@ import Footer from './Footer'
 import ServicesCarousel from './ServicesCarousel'
 import FAQSection from './FAQSection'
 import FloatingButtons from './FloatingButtons'
-import { PORTFOLIO_ITEMS } from '@/components/Portfolio/data'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import ContactForm from './ContactForm'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const payload = await getPayload({ config })
+  const { docs: portfolioItems } = await payload.find({
+    collection: 'portfolios',
+    limit: 3,
+    sort: 'createdAt',
+  })
+
+  const contactInfo = await payload.findGlobal({ slug: 'contact-info' }).catch(() => null)
+  const contactEmail = contactInfo?.email ?? 'contact@bratamedia.com'
+  const contactPhone = contactInfo?.phone ?? '6281234567890'
+  const contactLocation = contactInfo?.location ?? 'Semarang, Indonesia'
   return (
     <div className="bg-[#f9f9f8] text-[#1a1c1c] antialiased overflow-x-hidden">
       <Navbar />
@@ -413,7 +426,7 @@ export default function LandingPage() {
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {PORTFOLIO_ITEMS.slice(0, 3).map((item) => (
+              {portfolioItems.map((item) => (
                 <Link
                   key={item.id}
                   href={`/portofolio/${item.slug}`}
@@ -422,7 +435,7 @@ export default function LandingPage() {
                   <div className="relative aspect-[16/10] overflow-hidden bg-[#F2F3F1]">
                     <div
                       className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                      style={{ backgroundImage: `url(${item.image})` }}
+                      style={{ backgroundImage: `url(${item.imageUrl ?? ''})` }}
                     />
                   </div>
                   <div className="p-6">
@@ -518,7 +531,7 @@ export default function LandingPage() {
                       EMAIL
                     </p>
                     <p className="text-[15px] font-semibold text-[#1a1c1c]" style={B}>
-                      contact@bratamedia.com
+                      {contactEmail}
                     </p>
                   </div>
                 </div>
@@ -531,7 +544,7 @@ export default function LandingPage() {
                       BERBASIS DI
                     </p>
                     <p className="text-[15px] font-semibold text-[#1a1c1c]" style={B}>
-                      Semarang, Indonesia
+                      {contactLocation}
                     </p>
                   </div>
                 </div>
@@ -555,98 +568,7 @@ export default function LandingPage() {
             </div>
 
             {/* Right: Form */}
-            <div className="bg-white border border-[#e1bfb5]/50 rounded-xl p-8 shadow-sm">
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold text-[#59413a] uppercase" style={H}>
-                      NAMA LENGKAP
-                    </label>
-                    <input
-                      className="w-full px-4 py-3 rounded-lg border border-[#E3E5E1] focus:border-[#E8592C] focus:ring-1 focus:ring-[#E8592C] outline-none transition-all bg-[#f9f9f8]"
-                      placeholder="Nama Anda"
-                      type="text"
-                      style={B}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold text-[#59413a] uppercase" style={H}>
-                      EMAIL
-                    </label>
-                    <input
-                      className="w-full px-4 py-3 rounded-lg border border-[#E3E5E1] focus:border-[#E8592C] focus:ring-1 focus:ring-[#E8592C] outline-none transition-all bg-[#f9f9f8]"
-                      placeholder="nama@perusahaan.com"
-                      type="email"
-                      style={B}
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold text-[#59413a] uppercase" style={H}>
-                      JENIS PROYEK
-                    </label>
-                    <select
-                      className="w-full px-4 py-3 rounded-lg border border-[#E3E5E1] focus:border-[#E8592C] focus:ring-1 focus:ring-[#E8592C] outline-none transition-all bg-[#f9f9f8]"
-                      style={B}
-                    >
-                      <option>Web Application</option>
-                      <option>Mobile App</option>
-                      <option>Landing Page & Branding</option>
-                      <option>AI & Automation</option>
-                      <option>Web App Development</option>
-                      <option>Lainnya</option>
-                    </select>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold text-[#59413a] uppercase" style={H}>
-                      PERKIRAAN ANGGARAN
-                    </label>
-                    <select
-                      className="w-full px-4 py-3 rounded-lg border border-[#E3E5E1] focus:border-[#E8592C] focus:ring-1 focus:ring-[#E8592C] outline-none transition-all bg-[#f9f9f8]"
-                      style={B}
-                    >
-                      <option disabled value="">
-                        Pilih kisaran anggaran
-                      </option>
-                      <option>{'< Rp 10 Juta'}</option>
-                      <option>Rp 10 - 50 Juta</option>
-                      <option>Rp 50 - 100 Juta</option>
-                      <option>{'> Rp 100 Juta'}</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-[#59413a] uppercase" style={H}>
-                    PESAN
-                  </label>
-                  <textarea
-                    className="w-full px-4 py-3 rounded-lg border border-[#E3E5E1] focus:border-[#E8592C] focus:ring-1 focus:ring-[#E8592C] outline-none transition-all bg-[#f9f9f8] resize-none"
-                    placeholder="Ceritakan kebutuhan atau ide proyek Anda..."
-                    rows={4}
-                    style={B}
-                  />
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                  <button
-                    className="flex-1 bg-[#E8592C] hover:bg-[#B8420E] text-white font-semibold px-6 py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
-                    type="button"
-                    style={H}
-                  >
-                    <span className="material-symbols-outlined">chat</span>
-                    Kirim via WhatsApp
-                  </button>
-                  <button
-                    className="flex-1 bg-transparent border border-[#E8592C] text-[#E8592C] hover:bg-[#FBE4D9]/20 font-semibold px-6 py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
-                    type="button"
-                    style={H}
-                  >
-                    <span className="material-symbols-outlined">mail</span>
-                    Kirim via Email
-                  </button>
-                </div>
-              </form>
-            </div>
+            <ContactForm phone={contactPhone} email={contactEmail} />
           </div>
         </section>
       </main>

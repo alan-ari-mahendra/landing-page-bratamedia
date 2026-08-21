@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 import Navbar from '@/components/LandingPage/Navbar'
 import Footer from '@/components/LandingPage/Footer'
 import FloatingButtons from '@/components/LandingPage/FloatingButtons'
@@ -7,7 +9,16 @@ import PortfolioContent from './PortfolioContent'
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const payload = await getPayload({ config })
+  const { docs: items } = await payload.find({
+    collection: 'portfolios',
+    limit: 100,
+    sort: 'createdAt',
+  })
+
+  const categories = [...new Set(items.map((item) => item.category))]
+
   return (
     <>
       <Navbar />
@@ -34,7 +45,7 @@ export default function PortfolioPage() {
         </section>
 
         {/* Filter + Grid */}
-        <PortfolioContent />
+        <PortfolioContent items={items} categories={categories} />
 
         {/* CTA */}
         <section className="py-[100px] px-5 md:px-6">

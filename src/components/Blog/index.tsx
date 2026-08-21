@@ -1,27 +1,43 @@
+import Link from 'next/link'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 import Navbar from '@/components/LandingPage/Navbar'
 import Footer from '@/components/LandingPage/Footer'
 import FloatingButtons from '@/components/LandingPage/FloatingButtons'
 import BlogContent from './BlogContent'
+import type { Category } from '@/payload-types'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
 
-const FEATURED = {
-  slug: 'transformasi-digital-klinik-xyz-efisiensi-70-persen',
-  category: 'Studi Kasus',
-  title: 'Transformasi Digital: Bagaimana Klinik XYZ Meningkatkan Efisiensi 70%',
-  excerpt:
-    'Langkah demi langkah modernisasi sistem operasional klinik yang berdampak langsung pada pelayanan pasien dan pemangkasan biaya administratif.',
-  author: 'Tim Bratamedia',
-  date: '12 Okt 2023',
-  readTime: '5 menit baca',
-  image:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuBz9_kHbNcNUPQR2aEyOP4P32lk7PfPWrSfTKT9-sYblpr2jklU-z-SrzEssYpR-fRHTsfthrj8rcy3_vnI_-M34lIBvcYwIXIX7dg1ThUeHkwnKC7gMi_crNfnD7Nsn0ey__N6MUpXpkH5dswFhebMRPpyv3b3cwRQbi4WJR_KAc0UApJMOrlWrUQV-OvEn-Uj0eDCrfQ57BngDo_Ldt6_qKCD7ptJvg0p9hAt3LOR3989Od_7IpOR',
-  avatar:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuDDN8mVj_lb7OxtdHskgBfM-HASkIwc0jiAVVfH2CmmetG8mUJWXHMUu4Al2TgfcYt8wYrk3b4DaUDvfKhnzjKqZ9nK-WlDb-gnF343NANPbXRKV6tfZU-0Qsye3HJAHbuITouP3KI1YtOO1RSurdEpKUyfUbENGdlXJq3Zh85WcZ4Ota3XkOjWZ_3yvpc1RG8OdtrdSas3WeRI1b1oPlRE5QwiUf34idHtBb6c7G9WS92p-QL9HSe',
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const payload = await getPayload({ config })
+  const { docs: posts } = await payload.find({
+    collection: 'posts',
+    where: { _status: { equals: 'published' } },
+    sort: '-publishedAt',
+    limit: 100,
+    depth: 1,
+  })
+
+  const featured = posts[0] ?? null
+
+  const categorySet = new Set<string>()
+  posts.forEach((p) => {
+    p.categories?.forEach((cat) => {
+      if (typeof cat === 'object' && cat !== null) categorySet.add((cat as Category).title)
+    })
+  })
+  const categories = [...categorySet]
+
   return (
     <>
       <Navbar />
@@ -50,55 +66,55 @@ export default function BlogPage() {
         </section>
 
         {/* Featured Post */}
-        <section className="max-w-[1180px] mx-auto px-5 md:px-6 mb-20">
-          <Link href={`/blog/${FEATURED.slug}`} className="bg-white rounded-xl border border-[#E3E5E1] shadow-[0_4px_20px_rgba(18,22,19,0.04)] overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-lg flex flex-col md:flex-row">
-            <div className="md:w-[55%] relative h-64 md:h-auto">
-              <div
-                className="bg-cover bg-center w-full h-full absolute inset-0"
-                style={{ backgroundImage: `url(${FEATURED.image})` }}
-              />
-            </div>
-            <div className="md:w-[45%] p-8 md:p-10 flex flex-col justify-center">
-              <span
-                className="inline-block bg-[#FBE4D9] text-[#E8592C] text-[14px] font-bold uppercase tracking-[0.05em] px-3 py-1 rounded-full w-max mb-6"
-                style={H}
-              >
-                {FEATURED.category}
-              </span>
-              <h2
-                className="text-[36px] font-bold text-[#1a1c1c] leading-[44px] mb-4 group-hover:text-[#E8592C] transition-colors"
-                style={{ ...H, letterSpacing: '-0.01em' }}
-              >
-                {FEATURED.title}
-              </h2>
-              <p
-                className="text-[15px] text-[#6E766F] leading-[24px] mb-8 line-clamp-2"
-                style={B}
-              >
-                {FEATURED.excerpt}
-              </p>
-              <div className="flex items-center gap-4 mt-auto">
-                <div className="w-10 h-10 rounded-full bg-[#F2F3F1] overflow-hidden border border-[#E3E5E1] flex-shrink-0">
-                  <div
-                    className="bg-cover bg-center w-full h-full"
-                    style={{ backgroundImage: `url(${FEATURED.avatar})` }}
-                  />
-                </div>
-                <div>
-                  <p className="text-[16px] font-semibold text-[#1a1c1c] leading-tight" style={H}>
-                    {FEATURED.author}
-                  </p>
-                  <p className="text-[13px] text-[#6E766F] leading-tight" style={B}>
-                    {FEATURED.date} · {FEATURED.readTime}
-                  </p>
+        {featured && (
+          <section className="max-w-[1180px] mx-auto px-5 md:px-6 mb-20">
+            <Link
+              href={`/blog/${featured.slug}`}
+              className="bg-white rounded-xl border border-[#E3E5E1] shadow-[0_4px_20px_rgba(18,22,19,0.04)] overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-lg flex flex-col md:flex-row"
+            >
+              <div className="md:w-[55%] relative h-64 md:h-auto">
+                <div
+                  className="bg-cover bg-center w-full h-full absolute inset-0"
+                  style={{ backgroundImage: `url(${featured.heroImageUrl ?? ''})` }}
+                />
+              </div>
+              <div className="md:w-[45%] p-8 md:p-10 flex flex-col justify-center">
+                <span
+                  className="inline-block bg-[#FBE4D9] text-[#E8592C] text-[14px] font-bold uppercase tracking-[0.05em] px-3 py-1 rounded-full w-max mb-6"
+                  style={H}
+                >
+                  {typeof featured.categories?.[0] === 'object' && featured.categories[0] !== null
+                    ? (featured.categories[0] as Category).title
+                    : ''}
+                </span>
+                <h2
+                  className="text-[36px] font-bold text-[#1a1c1c] leading-[44px] mb-4 group-hover:text-[#E8592C] transition-colors"
+                  style={{ ...H, letterSpacing: '-0.01em' }}
+                >
+                  {featured.title}
+                </h2>
+                <p className="text-[15px] text-[#6E766F] leading-[24px] mb-8 line-clamp-2" style={B}>
+                  {featured.excerpt}
+                </p>
+                <div className="flex items-center gap-4 mt-auto">
+                  <div className="w-10 h-10 rounded-full bg-[#F2F3F1] border border-[#E3E5E1] flex-shrink-0" />
+                  <div>
+                    <p className="text-[16px] font-semibold text-[#1a1c1c] leading-tight" style={H}>
+                      {featured.populatedAuthors?.[0]?.name ?? 'Tim Bratamedia'}
+                    </p>
+                    <p className="text-[13px] text-[#6E766F] leading-tight" style={B}>
+                      {featured.publishedAt ? formatDate(featured.publishedAt) : ''} ·{' '}
+                      {featured.readTime}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        </section>
+            </Link>
+          </section>
+        )}
 
         {/* Filter + Grid */}
-        <BlogContent />
+        <BlogContent posts={posts} categories={categories} />
 
         {/* CTA */}
         <section className="max-w-[1180px] mx-auto px-5 md:px-6 py-20">
