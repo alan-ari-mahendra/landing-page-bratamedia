@@ -1,26 +1,66 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const NAV_LINKS = [
-  { label: 'Beranda', href: '/' },
-  { label: 'Layanan', href: '/#layanan' },
-  { label: 'Portfolio', href: '/#portofolio' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Tentang', href: '#' },
-  { label: 'Kontak', href: '/#hubungi-kami' },
+  { label: 'Beranda', href: '/', sectionId: null },
+  { label: 'Layanan', href: '/#layanan', sectionId: 'layanan' },
+  { label: 'Portfolio', href: '/portofolio', sectionId: null },
+  { label: 'Blog', href: '/blog', sectionId: null },
+  { label: 'Kontak', href: '/#hubungi-kami', sectionId: 'hubungi-kami' },
 ]
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string | null>(null)
   const pathname = usePathname()
 
-  const linkClass = (href: string) => {
-    const isActive = href === '/blog' ? pathname.startsWith('/blog') : pathname === href
+  useEffect(() => {
+    if (pathname !== '/') {
+      setActiveSection(null)
+      return
+    }
+
+    const sectionIds = ['layanan', 'hubungi-kami']
+    const observers: IntersectionObserver[] = []
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id)
+      if (!el) return
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry!.isIntersecting) setActiveSection(id)
+        },
+        { rootMargin: '-30% 0px -50% 0px', threshold: 0 },
+      )
+      observer.observe(el)
+      observers.push(observer)
+    })
+
+    // Clear active section when scrolled back near top
+    const onScroll = () => {
+      if (window.scrollY < 200) setActiveSection(null)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    return () => {
+      observers.forEach((o) => o.disconnect())
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [pathname])
+
+  const linkClass = (href: string, sectionId: string | null) => {
+    let isActive = false
+    if (href === '/blog') isActive = pathname.startsWith('/blog')
+    else if (href === '/portofolio') isActive = pathname.startsWith('/portofolio')
+    else if (sectionId) isActive = pathname === '/' && activeSection === sectionId
+    else if (href === '/') isActive = pathname === '/' && activeSection === null
+    else isActive = pathname === href
+
     return `transition-colors text-[16px] font-semibold ${
       isActive ? 'text-[#E8592C]' : 'text-[#59413a] hover:text-[#E8592C]'
     }`
@@ -38,7 +78,7 @@ export default function Navbar() {
         {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((item) => (
-            <Link key={item.label} href={item.href} className={linkClass(item.href)} style={H}>
+            <Link key={item.label} href={item.href} className={linkClass(item.href, item.sectionId)} style={H}>
               {item.label}
             </Link>
           ))}
@@ -74,7 +114,7 @@ export default function Navbar() {
               key={item.label}
               href={item.href}
               onClick={() => setMobileOpen(false)}
-              className={linkClass(item.href)}
+              className={linkClass(item.href, item.sectionId)}
               style={H}
             >
               {item.label}
