@@ -45,6 +45,18 @@
   --breakpoint-2xl: 86rem;
   --font-mono: var(--font-geist-mono);
   --font-sans: var(--font-geist-sans);
+  --color-bm-primary: #E8592C;
+  --color-bm-accent-dark: #B8420E;
+  --color-bm-accent-soft: #FBE4D9;
+  --color-bm-surface: #f9f9f8;
+  --color-bm-surface-alt: #F2F3F1;
+  --color-bm-surface-card: #FFFFFF;
+  --color-bm-border-subtle: #E3E5E1;
+  --color-bm-text-muted: #6E766F;
+  --color-bm-on-surface: #1a1c1c;
+  --color-bm-on-surface-variant: #59413a;
+  --color-bm-outline-variant: #e1bfb5;
+  --color-bm-surface-container-low: #f3f4f3;
 }
 
 @layer utilities {
@@ -222,3 +234,44 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+/* Bratamedia utilities */
+@keyframes bm-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.bm-animate-marquee {
+  animation: bm-marquee 30s linear infinite;
+  display: flex;
+  width: max-content;
+}
+.bm-dotted-leader {
+  background-image: radial-gradient(circle, #c4c7c2 1px, transparent 1px);
+  background-size: 6px 6px;
+  background-position: bottom;
+  background-repeat: repeat-x;
+  height: 1.2em;
+  margin: 0 8px;
+  flex-grow: 1;
+}
+
+@keyframes bm-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.bm-animate-marquee {
+  animation: bm-marquee 30s linear infinite;
+  display: flex;
+  width: max-content;
+}
+.bm-dotted-leader {
+  background-image: radial-gradient(circle, #c4c7c2 1px, transparent 1px);
+  background-size: 6px 6px;
+  background-position: bottom;
+  background-repeat: repeat-x;
+  height: 1.2em;
+  margin: 0 8px;
+  flex-grow: 1;
+}
+.font-plus-jakarta { font-family: var(--font-plus-jakarta-sans), sans-serif; }
+.font-inter { font-family: var(--font-inter), sans-serif; }
