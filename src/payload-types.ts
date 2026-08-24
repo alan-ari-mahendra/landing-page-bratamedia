@@ -70,6 +70,8 @@ export interface Config {
     pages: Page;
     posts: Post;
     portfolios: Portfolio;
+    clients: Client;
+    testimonials: Testimonial;
     media: Media;
     categories: Category;
     users: User;
@@ -93,6 +95,8 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     portfolios: PortfoliosSelect<false> | PortfoliosSelect<true>;
+    clients: ClientsSelect<false> | ClientsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -830,6 +834,59 @@ export interface Portfolio {
   createdAt: string;
 }
 /**
+ * Logo klien yang ditampilkan pada section "Klien Kami" di landing page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clients".
+ */
+export interface Client {
+  id: number;
+  /**
+   * Digunakan sebagai teks alternatif logo, tidak ditampilkan sebagai teks di halaman.
+   */
+  name: string;
+  logo: number | Media;
+  /**
+   * Jika diisi, logo akan menjadi tautan ke website klien.
+   */
+  website?: string | null;
+  /**
+   * Angka lebih kecil tampil lebih dulu.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Testimoni klien yang ditampilkan pada section "Testimoni" di landing page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  /**
+   * Contoh: "Rilis Tepat Waktu", "Hemat 8 Jam per Minggu".
+   */
+  tag: string;
+  quote: string;
+  name: string;
+  /**
+   * Contoh: "Direktur, Nama Perusahaan".
+   */
+  role: string;
+  /**
+   * Dikosongkan saja untuk otomatis diambil dari Nama Klien.
+   */
+  initials?: string | null;
+  /**
+   * Angka lebih kecil tampil lebih dulu.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1030,6 +1087,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'portfolios';
         value: number | Portfolio;
+      } | null)
+    | ({
+        relationTo: 'clients';
+        value: number | Client;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
       } | null)
     | ({
         relationTo: 'media';
@@ -1319,6 +1384,32 @@ export interface PortfoliosSelect<T extends boolean = true> {
       };
   generateSlug?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clients_select".
+ */
+export interface ClientsSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  website?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  tag?: T;
+  quote?: T;
+  name?: T;
+  role?: T;
+  initials?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }

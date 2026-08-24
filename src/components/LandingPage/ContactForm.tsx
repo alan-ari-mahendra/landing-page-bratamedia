@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
@@ -10,12 +10,17 @@ type Props = {
   email: string
 }
 
-export default function ContactForm({ phone, email }: Props) {
+type SubmitStatus = 'idle' | 'loading' | 'success' | 'error'
+
+export default function ContactForm({ phone }: Props) {
   const nameRef = useRef<HTMLInputElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
   const projectRef = useRef<HTMLSelectElement>(null)
   const budgetRef = useRef<HTMLSelectElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
+
+  const [status, setStatus] = useState<SubmitStatus>('idle')
+  const [statusMessage, setStatusMessage] = useState('')
 
   function buildMessage() {
     const name = nameRef.current?.value ?? ''
@@ -31,10 +36,43 @@ export default function ContactForm({ phone, email }: Props) {
     window.open(`https://wa.me/${phone}?text=${text}`, '_blank')
   }
 
-  function handleEmail() {
-    const subject = encodeURIComponent('Konsultasi Proyek - Bratamedia')
-    const body = encodeURIComponent(buildMessage())
-    window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank')
+  async function handleSendEmail() {
+    const name = nameRef.current?.value.trim() ?? ''
+    const senderEmail = emailRef.current?.value.trim() ?? ''
+    const project = projectRef.current?.value ?? ''
+    const budget = budgetRef.current?.value ?? ''
+    const message = messageRef.current?.value.trim() ?? ''
+
+    if (!name || !senderEmail || !message) {
+      setStatus('error')
+      setStatusMessage('Nama, email, dan pesan wajib diisi.')
+      return
+    }
+
+    setStatus('loading')
+    setStatusMessage('')
+
+    try {
+      const res = await fetch('/api/contact-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email: senderEmail, project, budget, message }),
+      })
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null)
+        throw new Error(body?.errors?.[0]?.message || 'Gagal mengirim pesan. Silakan coba lagi.')
+      }
+
+      setStatus('success')
+      setStatusMessage('Pesan Anda berhasil terkirim. Tim kami akan segera menghubungi Anda.')
+      if (nameRef.current) nameRef.current.value = ''
+      if (emailRef.current) emailRef.current.value = ''
+      if (messageRef.current) messageRef.current.value = ''
+    } catch (err) {
+      setStatus('error')
+      setStatusMessage(err instanceof Error ? err.message : 'Gagal mengirim pesan.')
+    }
   }
 
   return (
@@ -126,15 +164,24 @@ export default function ContactForm({ phone, email }: Props) {
             Kirim via WhatsApp
           </button>
           <button
-            className="flex-1 bg-transparent border border-[#E8592C] text-[#E8592C] hover:bg-[#FBE4D9]/20 font-semibold px-6 py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
+            className="flex-1 bg-transparent border border-[#E8592C] text-[#E8592C] hover:bg-[#FBE4D9]/20 font-semibold px-6 py-4 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             type="button"
-            onClick={handleEmail}
+            onClick={handleSendEmail}
+            disabled={status === 'loading'}
             style={H}
           >
             <span className="material-symbols-outlined">mail</span>
-            Kirim via Email
+            {status === 'loading' ? 'Mengirim...' : 'Kirim via Email'}
           </button>
         </div>
+        {statusMessage && (
+          <p
+            className={`text-sm font-medium ${status === 'error' ? 'text-red-600' : 'text-green-600'}`}
+            style={B}
+          >
+            {statusMessage}
+          </p>
+        )}
       </form>
     </div>
   )

@@ -2,6 +2,14 @@
 
 import { useState } from 'react'
 
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.72 14.03c-.24.68-1.19 1.24-1.95 1.4-.53.11-1.22.2-3.55-.76-2.98-1.23-4.9-4.24-5.05-4.44-.14-.2-1.2-1.6-1.2-3.05s.75-2.17 1.02-2.47c.26-.29.57-.36.76-.36h.55c.18 0 .42-.07.65.5.24.58.82 2 .89 2.14.07.15.11.32.02.51-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.24 2.22 1.38.28.14.44.12.6-.07.16-.2.68-.79.87-1.06.18-.27.36-.22.6-.13.24.09 1.53.72 1.79.85.26.13.43.19.5.3.06.11.06.63-.18 1.3z" />
+    </svg>
+  )
+}
+
 export default function FloatingButtons() {
   const [waOpen, setWaOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
@@ -11,10 +19,10 @@ export default function FloatingButtons() {
       {/* WhatsApp floating button */}
       <button
         onClick={() => setWaOpen(true)}
-        className="fixed bottom-6 right-6 z-50 bg-[#128C7E] hover:bg-[#075E54] text-white w-[60px] h-[60px] rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#1DA851] text-white w-[60px] h-[60px] rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
         aria-label="Chat WhatsApp"
       >
-        <span className="material-symbols-outlined text-[32px]">chat</span>
+        <WhatsAppIcon className="w-8 h-8" />
       </button>
 
       {/* AI chat floating button */}
@@ -96,8 +104,8 @@ export default function FloatingButtons() {
             </button>
             <div className="p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-[#128C7E] rounded-lg flex items-center justify-center text-white">
-                  <span className="material-symbols-outlined">chat</span>
+                <div className="w-10 h-10 bg-[#25D366] rounded-lg flex items-center justify-center text-white">
+                  <WhatsAppIcon className="w-5 h-5" />
                 </div>
                 <h3
                   className="text-xl font-bold text-[#1a1c1c]"
@@ -183,11 +191,11 @@ export default function FloatingButtons() {
                   />
                 </div>
                 <button
-                  className="w-full bg-[#128C7E] hover:bg-[#075E54] text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 mt-2"
+                  className="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 mt-2"
                   type="button"
                   style={{ fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }}
                 >
-                  <span className="material-symbols-outlined">chat</span>
+                  <WhatsAppIcon className="w-5 h-5" />
                   Kirim ke WhatsApp
                 </button>
               </form>

@@ -1,15 +1,19 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { Clients } from './collections/Clients'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Portfolios } from './collections/Portfolios'
 import { Posts } from './collections/Posts'
+import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
+import { contactSubmitEndpoint } from './endpoints/contactSubmit'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { ContactInfo } from './globals/ContactInfo'
@@ -64,8 +68,22 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Portfolios, Media, Categories, Users],
+  collections: [Pages, Posts, Portfolios, Clients, Testimonials, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'no-reply@bratamedia.com',
+    defaultFromName: process.env.SMTP_FROM_NAME || 'Bratamedia Website',
+    transportOptions: {
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    },
+  }),
+  endpoints: [contactSubmitEndpoint],
   globals: [Header, Footer, ContactInfo],
   plugins,
   secret: process.env.PAYLOAD_SECRET,

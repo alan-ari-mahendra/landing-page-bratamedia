@@ -7,6 +7,8 @@ import FloatingButtons from './FloatingButtons'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import ContactForm from './ContactForm'
+import { Media } from '@/components/Media'
+import { resolveImageUrl } from '@/utilities/getMediaUrl'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
@@ -17,6 +19,18 @@ export default async function LandingPage() {
     collection: 'portfolios',
     limit: 3,
     sort: 'createdAt',
+  })
+
+  const { docs: clients } = await payload.find({
+    collection: 'clients',
+    limit: 100,
+    sort: 'order',
+  })
+
+  const { docs: testimonials } = await payload.find({
+    collection: 'testimonials',
+    limit: 100,
+    sort: 'order',
   })
 
   const contactInfo = await payload.findGlobal({ slug: 'contact-info' }).catch(() => null)
@@ -166,11 +180,11 @@ export default async function LandingPage() {
               { num: '10+', label: 'Tahun Pengalaman' },
               { num: '50+', label: 'Klien Aktif' },
               { num: '4', label: 'Layanan Utama' },
-              { num: 'Semarang & Indonesia', label: 'Area Jangkauan' },
-            ].map(({ num, label }) => (
+              { num: 'Semarang & Indonesia', label: 'Area Jangkauan', numSize: 'text-[40px]' },
+            ].map(({ num, label, numSize }) => (
               <div key={label} className="flex flex-col items-center md:items-start text-center md:text-left px-4">
                 <h2
-                  className="font-bold text-[#E8592C] text-[48px] md:text-[56px] leading-none mb-4"
+                  className={`font-bold text-[#E8592C] ${numSize ?? 'text-[48px] md:text-[56px]'} leading-none mb-4`}
                   style={{ ...H, letterSpacing: '-0.01em' }}
                 >
                   {num}
@@ -300,10 +314,10 @@ export default async function LandingPage() {
                 { num: '04', title: 'Review & Revisi', desc: 'Anda cek hasilnya, catat yang perlu diubah, dan kami sempurnakan.' },
                 { num: '05', title: 'Launch & Iterasi', desc: 'Website tayang, kami pastikan semua berjalan baik, dan siap dikembangkan lebih lanjut.' },
               ].map(({ num, title, desc }) => (
-                <div key={num} className="flex flex-col gap-4">
+                <div key={num} className="group flex flex-col gap-4">
                   <div className="flex items-center gap-4">
                     <span
-                      className="text-[48px] md:text-[56px] font-bold text-[#E8592C]/20 leading-none"
+                      className="text-[48px] md:text-[56px] font-bold text-[#E8592C]/20 leading-none transition-colors duration-300 group-hover:text-[#E8592C]"
                       style={H}
                     >
                       {num}
@@ -332,14 +346,34 @@ export default async function LandingPage() {
               Klien Kami
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-              {['RS. Telogorejo','Nyonya Meneer','Alifa Kids','Klien 4','Klien 5','Klien 6','Klien 7','Klien 8'].map((name) => (
-                <div
-                  key={name}
-                  className="flex items-center justify-center p-4 transition-all duration-300 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105 cursor-pointer"
-                >
-                  <span className="text-[#6E766F] font-bold text-lg" style={H}>{name}</span>
-                </div>
-              ))}
+              {clients.map((client) => {
+                const logo = (
+                  <Media
+                    resource={client.logo}
+                    htmlElement={null}
+                    imgClassName="max-h-[250px] max-w-[250px] w-auto h-auto object-contain mx-auto"
+                  />
+                )
+                return (
+                  <div
+                    key={client.id}
+                    className="flex items-center justify-center h-[280px] p-4 transition-transform duration-300 hover:scale-105"
+                  >
+                    {client.website ? (
+                      <a
+                        href={client.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block cursor-pointer"
+                      >
+                        {logo}
+                      </a>
+                    ) : (
+                      logo
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </div>
         </section>
@@ -365,31 +399,9 @@ export default async function LandingPage() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  tag: 'Rilis Tepat Waktu',
-                  quote: '"Yang paling saya hargai, harga tidak berubah di tengah jalan. Semua sudah dijelaskan sejak penawaran pertama, dan tim Bratamedia selalu update progresnya tanpa perlu kami tanya duluan."',
-                  initials: 'AS',
-                  name: 'Nama Klien',
-                  role: 'Direktur, Nama Perusahaan',
-                },
-                {
-                  tag: 'Hemat 8 Jam per Minggu',
-                  quote: '"Tim kami tidak lagi mencatat pesanan secara manual. Semua sudah masuk ke satu sistem yang rapi. Investasi terbaik yang pernah kami lakukan untuk efisiensi operasional tahun ini."',
-                  initials: 'RM',
-                  name: 'Nama Klien',
-                  role: 'Owner, Nama Bisnis',
-                },
-                {
-                  tag: 'Respons Cepat < 15 Menit',
-                  quote: '"Setelah website tayang, mereka tidak menghilang. Tim support sangat responsif setiap kali kami butuh bantuan teknis atau ada fitur kecil yang ingin ditambahkan. Sangat membantu."',
-                  initials: 'DW',
-                  name: 'Nama Klien',
-                  role: 'Marketing Manager, Startup',
-                },
-              ].map(({ tag, quote, initials, name, role }) => (
+              {testimonials.map(({ id, tag, quote, initials, name, role }) => (
                 <div
-                  key={tag}
+                  key={id}
                   className="bg-white border border-[#E3E5E1] p-8 rounded-xl shadow-sm flex flex-col gap-6"
                 >
                   <p className="text-[#E8592C] text-xs font-bold uppercase tracking-wider" style={H}>
@@ -435,7 +447,7 @@ export default async function LandingPage() {
                   <div className="relative aspect-[16/10] overflow-hidden bg-[#F2F3F1]">
                     <div
                       className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                      style={{ backgroundImage: `url(${item.imageUrl ?? ''})` }}
+                      style={{ backgroundImage: `url(${resolveImageUrl(item.imageUrl, item.heroImage)})` }}
                     />
                   </div>
                   <div className="p-6">

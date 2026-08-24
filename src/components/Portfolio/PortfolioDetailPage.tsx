@@ -3,6 +3,7 @@ import Navbar from '@/components/LandingPage/Navbar'
 import Footer from '@/components/LandingPage/Footer'
 import FloatingButtons from '@/components/LandingPage/FloatingButtons'
 import type { Portfolio } from '@/payload-types'
+import { resolveImageUrl } from '@/utilities/getMediaUrl'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
@@ -66,7 +67,7 @@ export default function PortfolioDetailPage({ portfolio, prev, next }: Props) {
           <div className="mb-[100px]">
             <div
               className="w-full aspect-video rounded-xl border border-[#E3E5E1] shadow-[0_4px_20px_rgba(18,22,19,0.04)] bg-cover bg-center"
-              style={{ backgroundImage: `url(${portfolio.imageUrl ?? ''})` }}
+              style={{ backgroundImage: `url(${resolveImageUrl(portfolio.imageUrl, portfolio.heroImage)})` }}
             />
           </div>
 
@@ -134,12 +135,20 @@ export default function PortfolioDetailPage({ portfolio, prev, next }: Props) {
               <p className="text-[15px] text-[#6E766F] leading-[24px] mb-8" style={B}>
                 {portfolio.solution}
               </p>
-              {portfolio.solutionImageUrl && (
-                <div
-                  className="w-full h-64 rounded-xl border border-[#E3E5E1] shadow-[0_4px_20px_rgba(18,22,19,0.04)] bg-cover bg-center"
-                  style={{ backgroundImage: `url(${portfolio.solutionImageUrl})` }}
-                />
-              )}
+              {(() => {
+                const solutionImgUrl = resolveImageUrl(
+                  portfolio.solutionImageUrl,
+                  portfolio.solutionImage,
+                )
+                return (
+                  solutionImgUrl && (
+                    <div
+                      className="w-full h-64 rounded-xl border border-[#E3E5E1] shadow-[0_4px_20px_rgba(18,22,19,0.04)] bg-cover bg-center"
+                      style={{ backgroundImage: `url(${solutionImgUrl})` }}
+                    />
+                  )
+                )
+              })()}
             </div>
           </section>
 

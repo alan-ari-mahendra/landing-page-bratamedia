@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import PortfolioDetailPage from '@/components/Portfolio/PortfolioDetailPage'
+import { resolveImageUrl } from '@/utilities/getMediaUrl'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     limit: 1,
   })
   const item = docs[0]
+  const ogImage = item ? resolveImageUrl(item.imageUrl, item.heroImage) : ''
   return {
     title: item ? `${item.title} - Portofolio Bratamedia` : 'Portofolio - Bratamedia',
     description: item?.desc,
@@ -24,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           description: item.desc,
           url: `/portofolio/${slug}`,
           type: 'website',
-          images: item.imageUrl ? [{ url: item.imageUrl, width: 1200, height: 630 }] : [],
+          images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
         }
       : undefined,
     alternates: { canonical: `/portofolio/${slug}` },

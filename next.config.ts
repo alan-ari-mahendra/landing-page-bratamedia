@@ -23,6 +23,9 @@ const nextConfig: NextConfig = {
       {
         pathname: '/api/media/file/**',
       },
+      {
+        pathname: '/base-logo-brata.png',
+      },
     ],
     qualities: [100],
     remotePatterns: [

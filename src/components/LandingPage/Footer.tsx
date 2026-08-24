@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
@@ -26,8 +27,14 @@ export default function Footer({ activePage }: { activePage?: string }) {
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-2 text-xl font-bold text-[#1a1c1c] mb-4" style={H}>
+              <Image
+                src="/base-logo-brata.png"
+                alt="Bratamedia"
+                width={532}
+                height={469}
+                className="h-7 w-auto"
+              />
               Bratamedia
-              <div className="w-2 h-2 bg-[#E8592C] mt-1" />
             </Link>
             <p className="text-[#6E766F] text-sm mb-4" style={B}>
               Partner digital terpercaya Anda sejak 2013.
@@ -76,20 +83,20 @@ export default function Footer({ activePage }: { activePage?: string }) {
           <div>
             <h4 className="font-bold text-[#1a1c1c] mb-4" style={H}>Kontak</h4>
             <p className="text-sm text-[#6E766F]" style={B}>
-              Jl. Tanjungsari 1 No. 18,
+              No.1 Blok H, Pd. Bukit Agung 2nd Floor,
               <br />
               Semarang, Jawa Tengah
               <br />
               <br />
-              halo@bratamedia.com
+              contact@bratamedia.com
               <br />
-              +62 812-3456-7890
+              +62 0895–3420–01544
             </p>
           </div>
         </div>
 
         <div className="border-t border-[#E3E5E1] pt-8 text-center text-sm text-[#6E766F]" style={B}>
-          © 2024 Bratamedia. All rights reserved.
+          © 2018 Bratamedia. All rights reserved.
         </div>
       </div>
     </footer>

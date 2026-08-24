@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import type { Portfolio } from '@/payload-types'
+import { resolveImageUrl } from '@/utilities/getMediaUrl'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
@@ -52,7 +53,7 @@ export default function PortfolioContent({ items, categories }: Props) {
               <div className="relative aspect-[16/10] overflow-hidden bg-[#F2F3F1]">
                 <div
                   className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                  style={{ backgroundImage: `url(${item.imageUrl ?? ''})` }}
+                  style={{ backgroundImage: `url(${resolveImageUrl(item.imageUrl, item.heroImage)})` }}
                 />
                 <div
                   className="absolute top-4 left-4 bg-[#E8592C] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"

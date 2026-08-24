@@ -53,18 +53,28 @@ export default function FAQSection() {
                 >
                   {faq.q}
                 </span>
-                <span className="material-symbols-outlined text-sm opacity-50 flex-shrink-0 ml-4">
-                  {openIndex === i ? 'remove' : 'expand_more'}
+                <span
+                  className={`material-symbols-outlined text-sm opacity-50 flex-shrink-0 ml-4 transition-transform duration-300 ease-in-out ${
+                    openIndex === i ? 'rotate-180' : 'rotate-0'
+                  }`}
+                >
+                  expand_more
                 </span>
               </button>
-              {openIndex === i && (
-                <p
-                  className="text-[#6E766F] text-[15px] leading-[24px] mt-6"
-                  style={{ fontFamily: 'var(--font-inter), sans-serif' }}
-                >
-                  {faq.a}
-                </p>
-              )}
+              <div
+                className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+                  openIndex === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <p
+                    className="text-[#6E766F] text-[15px] leading-[24px] mt-6"
+                    style={{ fontFamily: 'var(--font-inter), sans-serif' }}
+                  >
+                    {faq.a}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>

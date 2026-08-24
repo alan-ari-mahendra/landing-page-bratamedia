@@ -17,3 +17,20 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
 
   return cacheTag ? `${url}?${cacheTag}` : url
 }
+
+/**
+ * Resolves the display URL for a cover/section image that can be set either as a
+ * plain-text URL field or as a Payload `upload` relationship. The upload field is
+ * only populated as a full object when queried with sufficient `depth` — falls back
+ * to empty string if neither is available.
+ */
+export const resolveImageUrl = (
+  explicitUrl: string | null | undefined,
+  upload: number | { url?: string | null; updatedAt?: string | null } | null | undefined,
+): string => {
+  if (explicitUrl) return explicitUrl
+  if (upload && typeof upload === 'object') {
+    return getMediaUrl(upload.url, upload.updatedAt)
+  }
+  return ''
+}

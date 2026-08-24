@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -70,9 +71,16 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full z-50 bg-[#f9f9f8]/90 backdrop-blur-md border-b border-[#E3E5E1]">
       <div className="flex justify-between items-center max-w-[1180px] mx-auto px-6 h-20">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 text-[36px] font-bold text-[#1a1c1c]" style={H}>
+        <Link href="/" className="flex items-center gap-2 text-[28px] font-bold text-[#1a1c1c]" style={H}>
+          <Image
+            src="/base-logo-brata.png"
+            alt="Bratamedia"
+            width={532}
+            height={469}
+            className="h-9 w-auto"
+            priority
+          />
           Bratamedia
-          <div className="w-2 h-2 bg-[#E8592C] mt-2" />
         </Link>
 
         {/* Desktop nav links */}
