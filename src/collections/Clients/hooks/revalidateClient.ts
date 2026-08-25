@@ -6,16 +6,18 @@ export const revalidateClient: CollectionAfterChangeHook<Client> = ({ doc, req: 
   try {
     payload.logger.info(`Revalidating clients section on home page`)
     revalidatePath('/', 'page')
-  } catch (_) {
-    // Outside Next.js context — skip
+    revalidatePath('/', 'layout')
+  } catch (e) {
+    payload.logger.warn(`Revalidate client failed: ${e}`)
   }
   return doc
 }
 
-export const revalidateClientDelete: CollectionAfterDeleteHook<Client> = () => {
+export const revalidateClientDelete: CollectionAfterDeleteHook<Client> = ({ req: { payload } }) => {
   try {
     revalidatePath('/', 'page')
-  } catch (_) {
-    // Outside Next.js context — skip
+    revalidatePath('/', 'layout')
+  } catch (e) {
+    payload.logger.warn(`Revalidate client delete failed: ${e}`)
   }
 }

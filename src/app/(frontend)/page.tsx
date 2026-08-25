@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import LandingPage from '@/components/LandingPage'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
-export const revalidate = 300 // 5 menit
+export const revalidate = 60 // 1 menit
 
 export const metadata: Metadata = {
   title: 'Bratamedia - Solusi Digital untuk Bisnis Anda',

@@ -131,7 +131,7 @@ const BLOG_POSTS = [
   },
 ]
 
-const TESTIMONIALS = [
+const PORTFOLIO_ITEMS = [
   {
     slug: 'sistem-manajemen-klinik',
     title: 'Sistem Manajemen Klinik',
@@ -219,35 +219,6 @@ const TESTIMONIALS = [
       role: 'Internal Product Team',
     },
     tech: ['Next.js', 'Supabase', 'Stripe', 'BullMQ', 'Redis'],
-  },
-  {
-    slug: 'elevare-kanban-saas',
-    title: 'Elevare — Real-time Kanban SaaS',
-    category: 'SaaS Product Development',
-    desc: 'Project management tool berbasis Kanban board dengan real-time collaboration, dibangun untuk tim kecil yang butuh workflow tracking tanpa kerumitan enterprise tools.',
-    imageUrl: '/images/projects/elevare-hero.jpg',
-    client: 'Produk Internal Bratamedia',
-    duration: '6 Minggu, 2025',
-    challenge: [
-      'Tools project management enterprise seperti Jira sering kelebihan fitur untuk tim kecil, sementara tools sederhana seperti Trello kurang fleksibel untuk custom workflow dan real-time sync antar anggota tim.',
-      'Dibutuhkan solusi ringan yang tetap punya real-time update ketika ada perubahan status task, tanpa harus refresh manual atau mengalami delay sinkronisasi.',
-    ],
-    solution:
-      'Kami kembangkan Kanban board dengan real-time sync menggunakan Supabase Realtime, drag-and-drop task management, dan struktur board yang bisa dikustomisasi sesuai workflow masing-masing tim, dengan fokus pada performa dan kesederhanaan UI.',
-    solutionImageUrl: '/images/projects/elevare-solution.jpg',
-    stats: [
-      { value: '<100ms', label: 'Sync Latency', sub: 'Update board antar user secara real-time' },
-      { value: '0', label: 'Refresh Manual', sub: 'Semua perubahan tersinkron otomatis' },
-      { value: '3', label: 'Board Layout', sub: 'Template workflow siap pakai' },
-    ],
-    testimonial: {
-      quote:
-        '"Elevare dibangun untuk membuktikan real-time collaboration tidak harus kompleks — tim kecil pun bisa dapat pengalaman kolaborasi yang responsif tanpa overhead setup."',
-      initials: 'BM',
-      name: 'Tim Bratamedia',
-      role: 'Internal Product Team',
-    },
-    tech: ['Next.js', 'Supabase', 'Realtime', 'Tailwind CSS'],
   },
   {
     slug: 'learnify-lms-platform',
@@ -466,6 +437,8 @@ async function seedCore(payload: Awaited<ReturnType<typeof getPayload>>) {
   console.log('Categories done')
 
   // 3. Seed blog posts
+  const existingPosts = await payload.find({ collection: 'posts', limit: 1 })
+  const skipPosts = existingPosts.totalDocs > 0
   if (skipPosts) {
     console.log('Posts already exist, skipping.')
   } else {
