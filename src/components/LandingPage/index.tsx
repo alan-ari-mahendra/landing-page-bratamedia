@@ -15,23 +15,20 @@ const B = { fontFamily: 'var(--font-inter), sans-serif' }
 
 export default async function LandingPage() {
   const payload = await getPayload({ config })
-  const { docs: portfolioItems } = await payload.find({
-    collection: 'portfolios',
-    limit: 3,
-    sort: 'createdAt',
-  })
+  const { docs: portfolioItems } = await payload
+    .find({ collection: 'portfolios', limit: 3, sort: 'createdAt' })
+    .catch(() => ({ docs: [] as any[] }))
+    .then((r) => r)
 
-  const { docs: clients } = await payload.find({
-    collection: 'clients',
-    limit: 100,
-    sort: 'order',
-  })
+  const { docs: clients } = await payload
+    .find({ collection: 'clients', limit: 100, sort: 'order' })
+    .catch(() => ({ docs: [] as any[] }))
+    .then((r) => r)
 
-  const { docs: testimonials } = await payload.find({
-    collection: 'testimonials',
-    limit: 100,
-    sort: 'order',
-  })
+  const { docs: testimonials } = await payload
+    .find({ collection: 'testimonials', limit: 100, sort: 'order' })
+    .catch(() => ({ docs: [] as any[] }))
+    .then((r) => r)
 
   const contactInfo = await payload.findGlobal({ slug: 'contact-info' }).catch(() => null)
   const contactEmail = contactInfo?.email ?? 'contact@bratamedia.com'
