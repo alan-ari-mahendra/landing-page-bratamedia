@@ -131,10 +131,66 @@ const BLOG_POSTS = [
   },
 ]
 
-// Internal Products — Bratamedia
-// Format konsisten dengan case-study client projects (challenge/solution/stats/testimonial)
-// TODO: ganti imageUrl & solutionImageUrl dengan asset asli sebelum deploy
-const PORTFOLIO_ITEMS = [
+const TESTIMONIALS = [
+  {
+    slug: 'sistem-manajemen-klinik',
+    title: 'Sistem Manajemen Klinik',
+    category: 'Web App Development',
+    desc: 'Sistem pendataan pasien dan jadwal dokter untuk klinik swasta, menggantikan pencatatan manual.',
+    imageUrl:
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuAOS7TwU3lr3z3K-x-AmHHh4SwOiU4I7slx19TlBvebuZtCrE8aWm_iK2adlwQDCO94Ru28xs-DpfgiGr3Vm-88hJsRL76k5BzIELnl2oQBQu8EEJsWumyrdVNZtARGXo4rtmFpZt9vgUsJJjqoxaFcWRrZdcd7K9o2WbMNMqwoh-FWxtCu-PHJseP5Zlnihjj6R8Po9BdsuYfLrn8jB6de7Pg7wLsz5IoRdERq8wCkH-pokbaTJ3wV',
+    client: 'Klinik Swasta di Semarang',
+    duration: '8 Minggu, 2025',
+    challenge: [
+      'Tim sales yang menjual ke resto sering membuang waktu untuk manual searching lead lewat Google Maps satu per satu, lalu copy-paste data ke spreadsheet sebelum follow-up. Prosesnya lambat dan data cepat basi karena tidak ada tracking status lead yang jelas.',
+      'Belum ada tools yang menggabungkan proses scraping data lead dengan CRM pipeline dalam satu platform, sehingga tim harus berpindah antar beberapa tools terpisah setiap hari.',
+    ],
+    solution:
+      'Kami bangun platform full-stack yang menggabungkan scraping engine berbasis BullMQ dan Redis untuk menarik data resto dari Google Maps/OpenStreetMap secara asynchronous, dengan CRM pipeline lengkap (status lead, notes, activity log) dan modul AI outreach untuk generate pesan follow-up otomatis berdasarkan profil lead.',
+    solutionImageUrl: '/images/projects/dinelead-solution.jpg',
+    stats: [
+      { value: '85%', label: 'Lebih Cepat', sub: 'Proses pengumpulan lead dibanding manual' },
+      { value: '4', label: 'Format Export', sub: 'Excel, CSV, JSON, dan API' },
+      { value: '100%', label: 'Async', sub: 'Scraping job berjalan di background tanpa blocking UI' },
+    ],
+    testimonial: {
+      quote:
+        '"Sebagai internal tool, DineLead jadi bukti kalau scraping pipeline dan CRM bisa berjalan mulus dalam satu sistem tanpa perlu integrasi pihak ketiga yang mahal."',
+      initials: 'BM',
+      name: 'Tim Bratamedia',
+      role: 'Internal Product Team',
+    },
+    tech: ['Next.js', 'Supabase', 'Stripe', 'BullMQ', 'Redis'],
+  },
+  {
+    slug: 'elevare-kanban-saas',
+    title: 'Elevare — Real-time Kanban SaaS',
+    category: 'SaaS Product Development',
+    desc: 'Project management tool berbasis Kanban board dengan real-time collaboration, dibangun untuk tim kecil yang butuh workflow tracking tanpa kerumitan enterprise tools.',
+    imageUrl: '/images/projects/elevare-hero.jpg',
+    client: 'Produk Internal Bratamedia',
+    duration: '6 Minggu, 2025',
+    challenge: [
+      'Tools project management enterprise seperti Jira sering kelebihan fitur untuk tim kecil, sementara tools sederhana seperti Trello kurang fleksibel untuk custom workflow dan real-time sync antar anggota tim.',
+      'Dibutuhkan solusi ringan yang tetap punya real-time update ketika ada perubahan status task, tanpa harus refresh manual atau mengalami delay sinkronisasi.',
+    ],
+    solution:
+      'Kami kembangkan Kanban board dengan real-time sync menggunakan Supabase Realtime, drag-and-drop task management, dan struktur board yang bisa dikustomisasi sesuai workflow masing-masing tim, dengan fokus pada performa dan kesederhanaan UI.',
+    solutionImageUrl: '/images/projects/elevare-solution.jpg',
+    stats: [
+      { value: '<100ms', label: 'Sync Latency', sub: 'Update board antar user secara real-time' },
+      { value: '0', label: 'Refresh Manual', sub: 'Semua perubahan tersinkron otomatis' },
+      { value: '3', label: 'Board Layout', sub: 'Template workflow siap pakai' },
+    ],
+    testimonial: {
+      quote:
+        '"Elevare dibangun untuk membuktikan real-time collaboration tidak harus kompleks — tim kecil pun bisa dapat pengalaman kolaborasi yang responsif tanpa overhead setup."',
+      initials: 'BM',
+      name: 'Tim Bratamedia',
+      role: 'Internal Product Team',
+    },
+    tech: ['Next.js', 'Supabase', 'Realtime', 'Tailwind CSS'],
+  },
   {
     slug: 'dinelead-restaurant-crm',
     title: 'DineLead — Restaurant CRM & Lead Scraping Platform',
@@ -410,24 +466,29 @@ async function seedCore(payload: Awaited<ReturnType<typeof getPayload>>) {
   console.log('Categories done')
 
   // 3. Seed blog posts
-  for (const post of BLOG_POSTS) {
-    const catId = categoryMap[post.category]
-    await payload.create({
-      collection: 'posts',
-      data: {
-        title: post.title,
-        slug: post.slug,
-        excerpt: post.excerpt,
-        readTime: post.readTime,
-        heroImageUrl: post.heroImageUrl,
-        publishedAt: post.publishedAt.toISOString(),
-        categories: catId ? [catId] : [],
-        authors: authorId ? [authorId] : [],
-        content: makeLexical(post.excerpt),
-        _status: 'published',
-      } as any,
-    })
-    console.log(`Post: ${post.slug}`)
+  if (skipPosts) {
+    console.log('Posts already exist, skipping.')
+  } else {
+    for (const post of BLOG_POSTS) {
+      const catId = categoryMap[post.category]
+      await payload.create({
+        collection: 'posts',
+        data: {
+          title: post.title,
+          slug: post.slug,
+          generateSlug: false,
+          excerpt: post.excerpt,
+          readTime: post.readTime,
+          heroImageUrl: post.heroImageUrl,
+          publishedAt: post.publishedAt.toISOString(),
+          categories: catId ? [catId] : [],
+          authors: authorId ? [authorId] : [],
+          content: makeLexical(post.excerpt),
+          _status: 'published',
+        } as any,
+      })
+      console.log(`Post: ${post.slug}`)
+    }
   }
 }
 

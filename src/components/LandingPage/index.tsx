@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import Navbar from './Navbar'
 import Footer from './Footer'
@@ -15,23 +16,20 @@ const B = { fontFamily: 'var(--font-inter), sans-serif' }
 
 export default async function LandingPage() {
   const payload = await getPayload({ config })
-  const { docs: portfolioItems } = await payload.find({
-    collection: 'portfolios',
-    limit: 3,
-    sort: 'createdAt',
-  })
+  const { docs: portfolioItems } = await payload
+    .find({ collection: 'portfolios', limit: 3, sort: 'createdAt' })
+    .catch(() => ({ docs: [] as any[] }))
+    .then((r) => r)
 
-  const { docs: clients } = await payload.find({
-    collection: 'clients',
-    limit: 100,
-    sort: 'order',
-  })
+  const { docs: clients } = await payload
+    .find({ collection: 'clients', limit: 100, sort: 'order' })
+    .catch(() => ({ docs: [] as any[] }))
+    .then((r) => r)
 
-  const { docs: testimonials } = await payload.find({
-    collection: 'testimonials',
-    limit: 100,
-    sort: 'order',
-  })
+  const { docs: testimonials } = await payload
+    .find({ collection: 'testimonials', limit: 100, sort: 'order' })
+    .catch(() => ({ docs: [] as any[] }))
+    .then((r) => r)
 
   const contactInfo = await payload.findGlobal({ slug: 'contact-info' }).catch(() => null)
   const contactEmail = contactInfo?.email ?? 'contact@bratamedia.com'
@@ -347,11 +345,21 @@ export default async function LandingPage() {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
               {clients.map((client) => {
-                const logo = (
+                const logoMedia = typeof client.logo === 'object' ? client.logo : null
+                const hasRealFile = logoMedia?.width && logoMedia.width > 0
+                const logo = hasRealFile ? (
                   <Media
                     resource={client.logo}
                     htmlElement={null}
                     imgClassName="max-h-[250px] max-w-[250px] w-auto h-auto object-contain mx-auto"
+                  />
+                ) : (
+                  <Image
+                    src={`https://placehold.co/250x250/f2f3f1/6E766F?text=${encodeURIComponent(client.name)}`}
+                    alt={client.name}
+                    width={250}
+                    height={250}
+                    className="max-h-[250px] max-w-[250px] w-auto h-auto object-contain mx-auto"
                   />
                 )
                 return (

@@ -37,6 +37,10 @@ const nextConfig: NextConfig = {
           protocol: url.protocol.replace(':', '') as 'http' | 'https',
         }
       }),
+      {
+        hostname: 'placehold.co',
+        protocol: 'https',
+      },
     ],
   },
   webpack: (webpackConfig) => {
