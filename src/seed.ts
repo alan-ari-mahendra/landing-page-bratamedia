@@ -131,6 +131,68 @@ const BLOG_POSTS = [
   },
 ]
 
+const TESTIMONIALS = [
+  {
+    tag: 'Rilis Tepat Waktu',
+    quote:
+      'Bratamedia berhasil mendelivery sistem klinik kami tepat waktu dan sesuai spesifikasi. Tim mereka sangat responsif dan memahami kebutuhan bisnis kami.',
+    name: 'Dr. Hendra Wijaya',
+    role: 'Direktur, Klinik Prima Sehat',
+    order: 1,
+  },
+  {
+    tag: 'Hemat 8 Jam per Minggu',
+    quote:
+      'Sejak menggunakan chatbot AI dari Bratamedia, tim customer service kami bisa fokus menangani kasus kompleks. Pertanyaan rutin sudah ditangani otomatis.',
+    name: 'Budi Hartono',
+    role: 'Head of Operations, TokoMaju',
+    order: 2,
+  },
+  {
+    tag: 'Konversi Naik 3x',
+    quote:
+      'Landing page yang dibuat Bratamedia langsung memberikan dampak signifikan. Konversi pre-order kami melonjak 3x lipat dari target awal.',
+    name: 'Rina Widyastuti',
+    role: 'Marketing Director, NusaBrand',
+    order: 3,
+  },
+  {
+    tag: 'Tim Cabang Mandiri',
+    quote:
+      'Akhirnya kami punya website yang bisa dikelola cabang masing-masing tanpa harus koordinasi ke IT pusat setiap saat.',
+    name: 'Suharto Wibowo',
+    role: 'IT Manager, ManufakturJaya',
+    order: 4,
+  },
+  {
+    tag: 'Data Real-Time',
+    quote:
+      'Dashboard dari Bratamedia mengubah cara kami mengelola bisnis retail. Semua toko terpantau real-time dari satu layar.',
+    name: 'Teguh Hartono',
+    role: 'Owner, RetailMaju',
+    order: 5,
+  },
+  {
+    tag: 'Aplikasi Stabil',
+    quote:
+      'Aplikasi booking yang dibangun Bratamedia sudah berjalan lebih dari setahun tanpa downtime berarti. Pengguna aktif terus bertambah.',
+    name: 'Andi Santoso',
+    role: 'CEO, LayananKu',
+    order: 6,
+  },
+]
+
+const CLIENT_NAMES = [
+  'RS Telogorejo',
+  'Mitsubishi Motors',
+  'Sriboga',
+  'Bank Jateng',
+  'Djarum',
+  'Telkom Indonesia',
+  'PLN',
+  'Indosat',
+]
+
 const PORTFOLIO_ITEMS = [
   {
     slug: 'sistem-manajemen-klinik',
@@ -327,13 +389,21 @@ const PORTFOLIO_ITEMS = [
 async function seed() {
   const payload = await getPayload({ config })
 
-  // Check if already seeded
-  const existingPortfolios = await payload.find({
-    collection: 'portfolios',
-    limit: 1,
-  })
-  if (existingPortfolios.totalDocs > 0) {
-    console.log('Already seeded — portfolios exist, skipping.')
+  // Check what's already seeded
+  const [existingPosts, existingPortfolios, existingClients, existingTestimonials] =
+    await Promise.all([
+      payload.find({ collection: 'posts', limit: 1 }),
+      payload.find({ collection: 'portfolios', limit: 1 }),
+      payload.find({ collection: 'clients', limit: 1 }),
+      payload.find({ collection: 'testimonials', limit: 1 }),
+    ])
+  const skipPosts = existingPosts.totalDocs > 0
+  const skipPortfolios = existingPortfolios.totalDocs > 0
+  const skipClients = existingClients.totalDocs > 0
+  const skipTestimonials = existingTestimonials.totalDocs > 0
+
+  if (skipPosts && skipPortfolios && skipClients && skipTestimonials) {
+    console.log('Already fully seeded, skipping.')
     process.exit(0)
   }
 
@@ -386,47 +456,114 @@ async function seed() {
   console.log('Categories done')
 
   // 3. Seed blog posts
-  for (const post of BLOG_POSTS) {
-    const catId = categoryMap[post.category]
-    await payload.create({
-      collection: 'posts',
-      data: {
-        title: post.title,
-        slug: post.slug,
-        excerpt: post.excerpt,
-        readTime: post.readTime,
-        heroImageUrl: post.heroImageUrl,
-        publishedAt: post.publishedAt.toISOString(),
-        categories: catId ? [catId] : [],
-        authors: authorId ? [authorId] : [],
-        content: makeLexical(post.excerpt),
-        _status: 'published',
-      } as any,
-    })
-    console.log(`Post: ${post.slug}`)
+  if (skipPosts) {
+    console.log('Posts already exist, skipping.')
+  } else {
+    for (const post of BLOG_POSTS) {
+      const catId = categoryMap[post.category]
+      await payload.create({
+        collection: 'posts',
+        data: {
+          title: post.title,
+          slug: post.slug,
+          generateSlug: false,
+          excerpt: post.excerpt,
+          readTime: post.readTime,
+          heroImageUrl: post.heroImageUrl,
+          publishedAt: post.publishedAt.toISOString(),
+          categories: catId ? [catId] : [],
+          authors: authorId ? [authorId] : [],
+          content: makeLexical(post.excerpt),
+          _status: 'published',
+        } as any,
+      })
+      console.log(`Post: ${post.slug}`)
+    }
   }
 
   // 4. Seed portfolio items
-  for (const item of PORTFOLIO_ITEMS) {
-    await payload.create({
-      collection: 'portfolios',
+  if (skipPortfolios) {
+    console.log('Portfolios already exist, skipping.')
+  } else {
+    for (const item of PORTFOLIO_ITEMS) {
+      await payload.create({
+        collection: 'portfolios',
+        data: {
+          title: item.title,
+          slug: item.slug,
+          generateSlug: false,
+          category: item.category,
+          desc: item.desc,
+          imageUrl: item.imageUrl,
+          client: item.client,
+          duration: item.duration,
+          challenge: item.challenge.map((paragraph) => ({ paragraph })),
+          solution: item.solution,
+          solutionImageUrl: item.solutionImageUrl,
+          stats: item.stats,
+          testimonial: item.testimonial,
+          tech: item.tech.map((name) => ({ name })),
+        } as any,
+      })
+      console.log(`Portfolio: ${item.slug}`)
+    }
+  }
+
+  // 5. Seed testimonials
+  if (skipTestimonials) {
+    console.log('Testimonials already exist, skipping.')
+  } else {
+    for (const t of TESTIMONIALS) {
+      await payload.create({
+        collection: 'testimonials',
+        data: t as any,
+      })
+      console.log(`Testimonial: ${t.name}`)
+    }
+  }
+
+  // 6. Seed clients (with placeholder SVG logo)
+  if (skipClients) {
+    console.log('Clients already exist, skipping.')
+  } else {
+    for (let i = 0; i < CLIENT_NAMES.length; i++) {
+      const name = CLIENT_NAMES[i]!
+      const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80" viewBox="0 0 200 80"><rect width="200" height="80" fill="#f2f3f1"/><text x="100" y="45" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6E766F">${name}</text></svg>`
+      const mediaDoc = await payload.create({
+        collection: 'media',
+        data: { alt: `Logo ${name}` },
+        file: {
+          name: `logo-${name.toLowerCase().replace(/\s+/g, '-')}.svg`,
+          data: Buffer.from(svgContent),
+          mimetype: 'image/svg+xml',
+          size: svgContent.length,
+        },
+      })
+      await payload.create({
+        collection: 'clients',
+        data: {
+          name,
+          logo: mediaDoc.id,
+          order: i + 1,
+        } as any,
+      })
+      console.log(`Client: ${name}`)
+    }
+  }
+
+  // 7. Seed contact-info global
+  try {
+    await payload.updateGlobal({
+      slug: 'contact-info',
       data: {
-        title: item.title,
-        slug: item.slug,
-        category: item.category,
-        desc: item.desc,
-        imageUrl: item.imageUrl,
-        client: item.client,
-        duration: item.duration,
-        challenge: item.challenge.map((paragraph) => ({ paragraph })),
-        solution: item.solution,
-        solutionImageUrl: item.solutionImageUrl,
-        stats: item.stats,
-        testimonial: item.testimonial,
-        tech: item.tech.map((name) => ({ name })),
-      } as any,
+        email: 'contact@bratamedia.com',
+        phone: '6281234567890',
+        location: 'Semarang, Indonesia',
+      },
     })
-    console.log(`Portfolio: ${item.slug}`)
+    console.log('Contact info: done')
+  } catch (e) {
+    console.warn('Could not seed contact-info:', e)
   }
 
   console.log('Seed complete.')
