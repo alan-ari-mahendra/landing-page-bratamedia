@@ -131,192 +131,149 @@ const BLOG_POSTS = [
   },
 ]
 
+// Internal Products — Bratamedia
+// Format konsisten dengan case-study client projects (challenge/solution/stats/testimonial)
+// TODO: ganti imageUrl & solutionImageUrl dengan asset asli sebelum deploy
 const PORTFOLIO_ITEMS = [
   {
-    slug: 'sistem-manajemen-klinik',
-    title: 'Sistem Manajemen Klinik',
-    category: 'Web App Development',
-    desc: 'Sistem pendataan pasien dan jadwal dokter untuk klinik swasta, menggantikan pencatatan manual.',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAOS7TwU3lr3z3K-x-AmHHh4SwOiU4I7slx19TlBvebuZtCrE8aWm_iK2adlwQDCO94Ru28xs-DpfgiGr3Vm-88hJsRL76k5BzIELnl2oQBQu8EEJsWumyrdVNZtARGXo4rtmFpZt9vgUsJJjqoxaFcWRrZdcd7K9o2WbMNMqwoh-FWxtCu-PHJseP5Zlnihjj6R8Po9BdsuYfLrn8jB6de7Pg7wLsz5IoRdERq8wCkH-pokbaTJ3wV',
-    client: 'Klinik Swasta di Semarang',
-    duration: '8 Minggu, 2025',
+    slug: 'dinelead-restaurant-crm',
+    title: 'DineLead — Restaurant CRM & Lead Scraping Platform',
+    category: 'SaaS Product Development',
+    desc: 'Platform CRM untuk tim sales resto, dengan built-in scraping engine untuk kumpulin lead dari Google Maps dan AI outreach otomatis.',
+    imageUrl: '/images/projects/dinelead-hero.jpg',
+    client: 'Produk Internal Bratamedia',
+    duration: '10 Minggu, 2025',
     challenge: [
-      'Sebelum kolaborasi ini, klinik menghadapi kendala signifikan akibat proses operasional yang masih mengandalkan pencatatan manual. Rekam medis fisik rentan hilang atau rusak, pencarian data pasien memakan waktu lama, dan sering terjadi tumpang tindih jadwal konsultasi.',
-      'Sistem pelaporan keuangan dan inventaris obat yang terpisah juga menyulitkan manajemen dalam mengambil keputusan strategis yang cepat dan akurat.',
+      'Tim sales yang menjual ke resto sering membuang waktu untuk manual searching lead lewat Google Maps satu per satu, lalu copy-paste data ke spreadsheet sebelum follow-up. Prosesnya lambat dan data cepat basi karena tidak ada tracking status lead yang jelas.',
+      'Belum ada tools yang menggabungkan proses scraping data lead dengan CRM pipeline dalam satu platform, sehingga tim harus berpindah antar beberapa tools terpisah setiap hari.',
     ],
     solution:
-      'Kami merancang dan mengembangkan Web App khusus yang mengintegrasikan seluruh alur kerja klinik. Dimulai dari pendaftaran pasien online, manajemen antrean real-time, Electronic Medical Record (EMR) terenkripsi, hingga modul apotek dan kasir yang saling terhubung.',
-    solutionImageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBhBoS6zZAVrjMERshxa5mxKqwDKO3lnWb_jJ4ECH8cDR4qRE4RXCJe6-e3sgYIW5-_zWCCr18k4cFN-IFkH2XsOEYIF9kofamTJc7o1Ne-JA7FjvwkjgyygGw4X2uArnI4xMUwZpZUBUE4FDMB_sQaXOul81mKSoT1ItDk7v9gPGuO2lSOz_9XhO4kPiay2lsErklxW3At9EUs0I898W7WtcXFjAEJcBltIjXBq9ldrjzMKjXWtQa0',
+      'Kami bangun platform full-stack yang menggabungkan scraping engine berbasis BullMQ dan Redis untuk menarik data resto dari Google Maps/OpenStreetMap secara asynchronous, dengan CRM pipeline lengkap (status lead, notes, activity log) dan modul AI outreach untuk generate pesan follow-up otomatis berdasarkan profil lead.',
+    solutionImageUrl: '/images/projects/dinelead-solution.jpg',
     stats: [
-      { value: '70%', label: 'Lebih Cepat', sub: 'Dalam proses administrasi pasien' },
-      { value: '0', label: 'Data Ganda', sub: 'Sinkronisasi EMR akurat 100%' },
-      { value: '3', label: 'Cabang', sub: 'Terintegrasi dalam satu sistem pusat' },
+      { value: '85%', label: 'Lebih Cepat', sub: 'Proses pengumpulan lead dibanding manual' },
+      { value: '4', label: 'Format Export', sub: 'Excel, CSV, JSON, dan API' },
+      { value: '100%', label: 'Async', sub: 'Scraping job berjalan di background tanpa blocking UI' },
     ],
     testimonial: {
       quote:
-        '"Transisi ke sistem digital yang dikembangkan Bratamedia sangat mulus. Tim klinik kami lebih produktif, dan yang terpenting, pelayanan pasien menjadi jauh lebih responsif. Investasi teknologi yang sangat sepadan."',
-      initials: 'DR',
-      name: 'Dr. Hendra',
-      role: 'Pemilik Klinik',
+        '"Sebagai internal tool, DineLead jadi bukti kalau scraping pipeline dan CRM bisa berjalan mulus dalam satu sistem tanpa perlu integrasi pihak ketiga yang mahal."',
+      initials: 'BM',
+      name: 'Tim Bratamedia',
+      role: 'Internal Product Team',
     },
-    tech: ['Next.js', 'Laravel', 'PostgreSQL', 'Docker'],
+    tech: ['Next.js', 'Supabase', 'Stripe', 'BullMQ', 'Redis'],
   },
   {
-    slug: 'aplikasi-pemesanan-layanan',
-    title: 'Aplikasi Pemesanan Layanan',
-    category: 'Mobile App',
-    desc: 'Aplikasi booking dan tracking layanan berbasis lokasi untuk pelanggan rumahan.',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBEJiVDGdHB-6Ue_5AhX_-abf9vvxEMHkQ8JTZ0_eOcejGCtUY-ld4wXY3bPBl4-eqBVUXwB6AVCPcrc3TY-PaM4Ptt65Oh9YnxjhTQRp_dd4QqNJvXTvN6H35M_6MRKEAJ9k41KohpsXpXnAP9lUqzbMN9fTUII77j4DGd1HfFU4ZZAO4c-gXfIk-LujkBopUBwZj5_Snhjs_QxdL_lu5BMvRRJpd52HH06JJbHA3v3MLyPCpmR4sl',
-    client: 'Startup Layanan Rumahan',
-    duration: '12 Minggu, 2024',
-    challenge: [
-      'Klien membutuhkan platform yang dapat menghubungkan pelanggan dengan penyedia layanan rumahan (kebersihan, reparasi, taman) secara real-time.',
-      'Tantangan utama adalah sistem tracking lokasi yang akurat dan notifikasi status yang handal untuk kedua sisi pengguna.',
-    ],
-    solution:
-      'Aplikasi mobile Flutter cross-platform dengan backend Node.js, integrasi Google Maps untuk tracking real-time, dan sistem notifikasi push yang andal. Panel admin web untuk manajemen mitra layanan.',
-    solutionImageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBhBoS6zZAVrjMERshxa5mxKqwDKO3lnWb_jJ4ECH8cDR4qRE4RXCJe6-e3sgYIW5-_zWCCr18k4cFN-IFkH2XsOEYIF9kofamTJc7o1Ne-JA7FjvwkjgyygGw4X2uArnI4xMUwZpZUBUE4FDMB_sQaXOul81mKSoT1ItDk7v9gPGuO2lSOz_9XhO4kPiay2lsErklxW3At9EUs0I898W7WtcXFjAEJcBltIjXBq9ldrjzMKjXWtQa0',
-    stats: [
-      { value: '2000+', label: 'Pengguna Aktif', sub: 'Dalam 3 bulan pertama' },
-      { value: '4.8', label: 'Rating App', sub: 'Di Play Store & App Store' },
-      { value: '95%', label: 'On-Time', sub: 'Layanan tepat waktu' },
-    ],
-    testimonial: {
-      quote:
-        '"Bratamedia memahami kebutuhan bisnis kami dengan sangat baik. Aplikasi yang mereka bangun langsung bisa kami operasikan tanpa hambatan berarti."',
-      initials: 'AS',
-      name: 'Andi Santoso',
-      role: 'CEO, LayananKu',
-    },
-    tech: ['Flutter', 'Node.js', 'MongoDB', 'Firebase'],
-  },
-  {
-    slug: 'landing-page-peluncuran-produk',
-    title: 'Landing Page Peluncuran Produk',
-    category: 'Landing Page & Branding',
-    desc: 'Halaman promosi dan identitas visual untuk peluncuran produk konsumen baru.',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAMd04l1Q4q8v12EzHYAaCCOy1-xV8TT8IhbvSQWqef908BgCwFWvjwehF0GMOevdKNNvctEZx2wQkZ5v-6iBUCARRrT1Soz_2LI-4xEQoqXer2cDRv1aiM3caXM8zdQZ72F2z4i3J35HYSqL0beZlajx10I6hCb_npNcTBIdU4A3gqy2iTv0y-yPE5DZJRaU8gggqS4g3GYwmWCtz9Z4ZxKgkDcid4FUZqAhGvSbShuOpGtrIUHz4V',
-    client: 'Brand FMCG Nasional',
-    duration: '3 Minggu, 2024',
-    challenge: [
-      'Klien membutuhkan landing page yang mampu mengkonversi pengunjung menjadi pembeli dalam waktu singkat untuk peluncuran produk baru.',
-      'Desain harus mencerminkan identitas brand yang premium namun tetap accessible untuk segmen pasar yang luas.',
-    ],
-    solution:
-      'Landing page high-converting dengan storytelling visual, social proof terintegrasi, dan form pre-order yang dioptimalkan. Dilengkapi A/B testing untuk memaksimalkan konversi.',
-    solutionImageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBhBoS6zZAVrjMERshxa5mxKqwDKO3lnWb_jJ4ECH8cDR4qRE4RXCJe6-e3sgYIW5-_zWCCr18k4cFN-IFkH2XsOEYIF9kofamTJc7o1Ne-JA7FjvwkjgyygGw4X2uArnI4xMUwZpZUBUE4FDMB_sQaXOul81mKSoT1ItDk7v9gPGuO2lSOz_9XhO4kPiay2lsErklxW3At9EUs0I898W7WtcXFjAEJcBltIjXBq9ldrjzMKjXWtQa0',
-    stats: [
-      { value: '8.3%', label: 'Konversi', sub: 'Di atas rata-rata industri 2-3%' },
-      { value: '500+', label: 'Pre-Order', sub: 'Dalam 48 jam pertama' },
-      { value: '3x', label: 'ROI', sub: 'Dari biaya pengembangan' },
-    ],
-    testimonial: {
-      quote:
-        '"Landing page yang Bratamedia buat melampaui ekspektasi kami. Konversi pre-order jauh di atas target awal kami."',
-      initials: 'RW',
-      name: 'Rina Widyastuti',
-      role: 'Marketing Director',
-    },
-    tech: ['Next.js', 'Tailwind CSS', 'Vercel', 'Analytics'],
-  },
-  {
-    slug: 'asisten-chat-otomatis',
-    title: 'Asisten Chat Otomatis untuk Layanan Pelanggan',
-    category: 'AI & Automation',
-    desc: 'Chatbot AI yang menjawab pertanyaan pelanggan dan meneruskan lead ke tim sales secara otomatis.',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDydGUYNjlrbY4mvRpXOpbCVIOYfu8RqgK_CYjSDbsEgTEhd3t4ULQf2hPj0CGX420Q_utjQL_WTRjnN3objwXe7IDikrL_TTwV1JE-KUv9iqFU8EudKhhbTXkEy6Mc5eiJAgfctO9iVIEL4JnYjkFHX4VaSjbZoFJahndf-Fewh-28TiCr9jqIf-RiXxCGG0RuJM0-tJevhbNxBviPg5Ai6_W6PJgO6Tdfj656h4jabiOb1FEVFtD2',
-    client: 'Perusahaan E-commerce Regional',
+    slug: 'elevare-kanban-saas',
+    title: 'Elevare — Real-time Kanban SaaS',
+    category: 'SaaS Product Development',
+    desc: 'Project management tool berbasis Kanban board dengan real-time collaboration, dibangun untuk tim kecil yang butuh workflow tracking tanpa kerumitan enterprise tools.',
+    imageUrl: '/images/projects/elevare-hero.jpg',
+    client: 'Produk Internal Bratamedia',
     duration: '6 Minggu, 2025',
     challenge: [
-      'Tim customer service kewalahan menangani ratusan pertanyaan serupa setiap harinya, menyebabkan response time yang lambat dan penurunan kepuasan pelanggan.',
-      'Perusahaan membutuhkan solusi yang dapat bekerja 24/7 tanpa menambah beban biaya operasional.',
+      'Tools project management enterprise seperti Jira sering kelebihan fitur untuk tim kecil, sementara tools sederhana seperti Trello kurang fleksibel untuk custom workflow dan real-time sync antar anggota tim.',
+      'Dibutuhkan solusi ringan yang tetap punya real-time update ketika ada perubahan status task, tanpa harus refresh manual atau mengalami delay sinkronisasi.',
     ],
     solution:
-      'Chatbot AI berbasis LLM yang terintegrasi dengan WhatsApp Business dan website. Dilengkapi knowledge base produk, kemampuan hand-off ke agen manusia untuk kasus kompleks, dan dashboard analytics percakapan.',
-    solutionImageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBhBoS6zZAVrjMERshxa5mxKqwDKO3lnWb_jJ4ECH8cDR4qRE4RXCJe6-e3sgYIW5-_zWCCr18k4cFN-IFkH2XsOEYIF9kofamTJc7o1Ne-JA7FjvwkjgyygGw4X2uArnI4xMUwZpZUBUE4FDMB_sQaXOul81mKSoT1ItDk7v9gPGuO2lSOz_9XhO4kPiay2lsErklxW3At9EUs0I898W7WtcXFjAEJcBltIjXBq9ldrjzMKjXWtQa0',
+      'Kami kembangkan Kanban board dengan real-time sync menggunakan Supabase Realtime, drag-and-drop task management, dan struktur board yang bisa dikustomisasi sesuai workflow masing-masing tim, dengan fokus pada performa dan kesederhanaan UI.',
+    solutionImageUrl: '/images/projects/elevare-solution.jpg',
     stats: [
-      { value: '80%', label: 'Auto-Resolve', sub: 'Pertanyaan terselesaikan tanpa agen' },
-      { value: '<2 min', label: 'Response Time', sub: 'Turun dari rata-rata 4 jam' },
-      { value: '40%', label: 'Hemat Biaya', sub: 'Operasional customer service' },
+      { value: '<100ms', label: 'Sync Latency', sub: 'Update board antar user secara real-time' },
+      { value: '0', label: 'Refresh Manual', sub: 'Semua perubahan tersinkron otomatis' },
+      { value: '3', label: 'Board Layout', sub: 'Template workflow siap pakai' },
     ],
     testimonial: {
       quote:
-        '"Chatbot AI dari Bratamedia berjalan mulus sejak hari pertama. Pelanggan kami bahkan tidak sadar sedang berbicara dengan AI."',
-      initials: 'BH',
-      name: 'Budi Hartono',
-      role: 'Head of Operations',
+        '"Elevare dibangun untuk membuktikan real-time collaboration tidak harus kompleks — tim kecil pun bisa dapat pengalaman kolaborasi yang responsif tanpa overhead setup."',
+      initials: 'BM',
+      name: 'Tim Bratamedia',
+      role: 'Internal Product Team',
     },
-    tech: ['Python', 'OpenAI API', 'WhatsApp Business API', 'PostgreSQL'],
+    tech: ['Next.js', 'Supabase', 'Realtime', 'Tailwind CSS'],
   },
   {
-    slug: 'website-korporat-multi-cabang',
-    title: 'Website Korporat Multi-Cabang',
-    category: 'Web Application',
-    desc: 'Website perusahaan dengan halaman khusus tiap cabang dan sistem manajemen konten mandiri.',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC9YImQ5Yh6M3722wHuo8Dkx_lELGUv4W_REvPXdN2bnJ0MzJWxOma8juYk9ieu2SYWusoN5tRT3i_eGCP6mpmC97hUKLsC9zq8cEdtGG74OzwLx3fbMXK3LHRDY9NSGbrws5GA_Kfg6IXBL2dTrEJFwdmDm5JlG9YA6-4R3HRDqrHWWxCSjaVa1kUPVq3HMdll-xLnvDhBhYcFqQu7iBZd-Z19a9EnSNwrRPOMiaJVqokRONOgNW1C',
-    client: 'Perusahaan Manufaktur Multi-Cabang',
-    duration: '10 Minggu, 2024',
+    slug: 'learnify-lms-platform',
+    title: 'Learnify — LMS dengan AI Quiz Generator',
+    category: 'SaaS Product Development',
+    desc: 'Platform LMS multi-role (student, instructor, admin) dengan video course, progress tracking, sertifikat, dan AI quiz generator otomatis dari materi course.',
+    imageUrl: '/images/projects/learnify-hero.jpg',
+    client: 'Produk Internal Bratamedia',
+    duration: '8 Minggu, 2025',
     challenge: [
-      'Perusahaan dengan 8 cabang di berbagai kota membutuhkan website yang bisa merepresentasikan setiap cabang secara individual namun tetap konsisten dalam branding.',
-      'Tim marketing di tiap cabang harus bisa memperbarui konten mereka sendiri tanpa ketergantungan pada tim IT pusat.',
+      'Instructor sering kesulitan membuat kuis evaluasi yang relevan dari materi course secara manual, prosesnya memakan waktu dan kualitasnya inkonsisten antar course.',
+      'Dibutuhkan sistem LMS yang tidak sekadar menampilkan video, tapi juga bisa memvalidasi progress belajar siswa secara otomatis dan menerbitkan sertifikat yang dapat diverifikasi.',
     ],
     solution:
-      'Website multi-tenant berbasis Next.js dengan CMS headless Payload. Setiap cabang mendapat subdomain dan dashboard konten mandiri, sementara branding global dikontrol terpusat.',
-    solutionImageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBhBoS6zZAVrjMERshxa5mxKqwDKO3lnWb_jJ4ECH8cDR4qRE4RXCJe6-e3sgYIW5-_zWCCr18k4cFN-IFkH2XsOEYIF9kofamTJc7o1Ne-JA7FjvwkjgyygGw4X2uArnI4xMUwZpZUBUE4FDMB_sQaXOul81mKSoT1ItDk7v9gPGuO2lSOz_9XhO4kPiay2lsErklxW3At9EUs0I898W7WtcXFjAEJcBltIjXBq9ldrjzMKjXWtQa0',
+      'Kami bangun LMS full-stack dengan tiga role terpisah (student, instructor, admin), integrasi AI untuk generate quiz otomatis dari transkrip/materi course, progress tracking real-time, dan sertifikat kelulusan dengan QR code verification.',
+    solutionImageUrl: '/images/projects/learnify-solution.jpg',
     stats: [
-      { value: '8', label: 'Cabang', sub: 'Terintegrasi dalam satu platform' },
-      { value: '100%', label: 'Mandiri', sub: 'Tim cabang kelola konten sendiri' },
-      { value: '60%', label: 'Lebih Cepat', sub: 'Waktu update konten' },
+      { value: '90%', label: 'Lebih Cepat', sub: 'Pembuatan quiz dibanding manual authoring' },
+      { value: '3', label: 'User Role', sub: 'Student, Instructor, Admin dengan akses terpisah' },
+      { value: '100%', label: 'Verifiable', sub: 'Sertifikat dengan QR code verification' },
     ],
     testimonial: {
       quote:
-        '"Akhirnya kami punya website yang bisa dikelola cabang masing-masing. Bratamedia berhasil membuat sistem yang kompleks terasa sangat mudah digunakan."',
-      initials: 'SW',
-      name: 'Suharto Wibowo',
-      role: 'IT Manager',
+        '"Learnify jadi showcase bagaimana AI bisa dipakai untuk mempercepat proses content authoring instructor, bukan sekadar untuk chatbot atau generate teks biasa."',
+      initials: 'BM',
+      name: 'Tim Bratamedia',
+      role: 'Internal Product Team',
     },
-    tech: ['Next.js', 'Payload CMS', 'PostgreSQL', 'Vercel'],
+    tech: ['Next.js', 'Prisma', 'PostgreSQL', 'AI Integration'],
   },
   {
-    slug: 'dashboard-operasional-retail',
-    title: 'Dashboard Operasional Retail',
-    category: 'Web App Development',
-    desc: 'Dashboard pemantauan stok dan penjualan real-time untuk jaringan toko retail.',
-    imageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAzTezZikOpQN78e-15uRvZ7sgGXgTxE2YZkmdRX1GZ15iKfbBWKCDbeSytAQ_01AAhzwxFIpsBfkQzMSXCtlfIRWj-O3kIM5kVXI1tixGYwy8P9qdgKPAeJ381XRAY7lnSYGV9F8-0ijLiWSLUm34K5ZV7URQ1inX2xgszVwEZLg5bE8t5sJY1YydKV92a56XmZVJigsyy_3TBMAXfw-Xgo5Ik8Pc9dKKibosI3yXiyRgc-s',
-    client: 'Jaringan Retail Jawa Tengah',
-    duration: '7 Minggu, 2025',
+    slug: 'griple-d2c-ecommerce',
+    title: 'Griple — D2C Gym Apparel E-commerce',
+    category: 'E-commerce Development',
+    desc: 'Platform e-commerce direct-to-consumer untuk brand apparel gym, dengan katalog produk, cart, checkout, dan manajemen inventory dalam satu sistem.',
+    imageUrl: '/images/projects/griple-hero.jpg',
+    client: 'Produk Internal Bratamedia',
+    duration: '5 Minggu, 2025',
     challenge: [
-      'Jaringan retail dengan 15 toko tidak memiliki visibilitas real-time terhadap stok dan performa penjualan tiap gerai.',
-      'Keputusan pembelian stok sering terlambat karena data baru tersedia keesokan harinya dari laporan manual.',
+      'Brand D2C kecil biasanya bergantung pada marketplace pihak ketiga yang membebankan komisi tinggi dan membatasi kontrol atas branding serta pengalaman belanja pelanggan.',
+      'Dibutuhkan platform sendiri yang ringan, cepat, dan mudah dikelola tanpa harus bergantung pada plugin e-commerce yang berat seperti WooCommerce.',
     ],
     solution:
-      'Dashboard web real-time dengan WebSocket untuk update stok instan, chart analitik penjualan, alert stok menipis otomatis, dan laporan yang bisa diekspor ke Excel/PDF.',
-    solutionImageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBhBoS6zZAVrjMERshxa5mxKqwDKO3lnWb_jJ4ECH8cDR4qRE4RXCJe6-e3sgYIW5-_zWCCr18k4cFN-IFkH2XsOEYIF9kofamTJc7o1Ne-JA7FjvwkjgyygGw4X2uArnI4xMUwZpZUBUE4FDMB_sQaXOul81mKSoT1ItDk7v9gPGuO2lSOz_9XhO4kPiay2lsErklxW3At9EUs0I898W7WtcXFjAEJcBltIjXBq9ldrjzMKjXWtQa0',
+      'Kami bangun storefront custom dengan Next.js dan Prisma, mencakup manajemen produk dan varian (ukuran, warna), cart persistence, checkout flow, dan dashboard admin untuk kelola stok dan pesanan tanpa ketergantungan marketplace pihak ketiga.',
+    solutionImageUrl: '/images/projects/griple-solution.jpg',
     stats: [
-      { value: '15', label: 'Toko', sub: 'Terpantau dalam satu dashboard' },
-      { value: 'Real-time', label: 'Data Stok', sub: 'Update instan tanpa delay' },
-      { value: '30%', label: 'Kurangi Stok Mati', sub: 'Lewat alert otomatis' },
+      { value: '0%', label: 'Komisi Marketplace', sub: 'Full kontrol atas margin dan branding' },
+      { value: '<2s', label: 'Page Load', sub: 'Storefront dioptimasi untuk performa checkout' },
+      { value: '100%', label: 'Custom Branding', sub: 'Tanpa batasan template marketplace' },
     ],
     testimonial: {
       quote:
-        '"Dashboard ini mengubah cara kami mengelola bisnis. Sekarang saya bisa melihat kondisi semua toko dari satu layar kapan saja."',
-      initials: 'TH',
-      name: 'Teguh Hartono',
-      role: 'Owner, RetailMaju',
+        '"Griple dibangun untuk menunjukkan storefront custom tetap bisa cepat dikembangkan dan dikelola tanpa kompleksitas platform e-commerce enterprise."',
+      initials: 'BM',
+      name: 'Tim Bratamedia',
+      role: 'Internal Product Team',
     },
-    tech: ['React', 'Node.js', 'WebSocket', 'PostgreSQL', 'Redis'],
+    tech: ['Next.js', 'Prisma', 'PostgreSQL', 'Stripe'],
+  },
+]
+
+const TESTIMONIALS = [
+  {
+    tag: 'Rilis Tepat Waktu',
+    quote:
+      '"Yang paling saya hargai, harga tidak berubah di tengah jalan. Semua sudah dijelaskan sejak penawaran pertama, dan tim Bratamedia selalu update progresnya tanpa perlu kami tanya duluan."',
+    name: 'Ahmad Setiawan',
+    role: 'Direktur, RS Telogorejo',
+  },
+  {
+    tag: 'Hemat 8 Jam per Minggu',
+    quote:
+      '"Tim kami tidak lagi mencatat pesanan secara manual. Semua sudah masuk ke satu sistem yang rapi. Investasi terbaik yang pernah kami lakukan untuk efisiensi operasional tahun ini."',
+    name: 'Retno Mulyani',
+    role: 'Owner, Nyonya Meneer',
+  },
+  {
+    tag: 'Respons Cepat < 15 Menit',
+    quote:
+      '"Setelah website tayang, mereka tidak menghilang. Tim support sangat responsif setiap kali kami butuh bantuan teknis atau ada fitur kecil yang ingin ditambahkan. Sangat membantu."',
+    name: 'Dimas Wirawan',
+    role: 'Marketing Manager, Sriboga',
   },
 ]
 
@@ -327,16 +284,83 @@ const PORTFOLIO_ITEMS = [
 async function seed() {
   const payload = await getPayload({ config })
 
-  // Check if already seeded
+  // Check if core content (posts/portfolios) is already seeded
   const existingPortfolios = await payload.find({
     collection: 'portfolios',
     limit: 1,
   })
-  if (existingPortfolios.totalDocs > 0) {
-    console.log('Already seeded — portfolios exist, skipping.')
-    process.exit(0)
+  const coreAlreadySeeded = existingPortfolios.totalDocs > 0
+
+  if (coreAlreadySeeded) {
+    console.log('Core content already seeded — portfolios exist, skipping posts/portfolios.')
+  } else {
+    await seedCore(payload)
   }
 
+  // Portfolio items are seeded independently and per-slug so re-running
+  // this script only backfills items that don't exist yet, instead of
+  // skipping all-or-nothing.
+  console.log('Seeding portfolio items...')
+  for (const item of PORTFOLIO_ITEMS) {
+    const existing = await payload.find({
+      collection: 'portfolios',
+      where: { slug: { equals: item.slug } },
+      limit: 1,
+    })
+    if (existing.totalDocs > 0) {
+      console.log(`Portfolio already exists, skipping: ${item.slug}`)
+      continue
+    }
+    await payload.create({
+      collection: 'portfolios',
+      data: {
+        title: item.title,
+        slug: item.slug,
+        category: item.category,
+        desc: item.desc,
+        imageUrl: item.imageUrl,
+        client: item.client,
+        duration: item.duration,
+        challenge: item.challenge.map((paragraph) => ({ paragraph })),
+        solution: item.solution,
+        solutionImageUrl: item.solutionImageUrl,
+        stats: item.stats,
+        testimonial: item.testimonial,
+        tech: item.tech.map((name) => ({ name })),
+      } as any,
+    })
+    console.log(`Portfolio: ${item.slug}`)
+  }
+
+  // Testimonials are seeded independently so re-running this script on an
+  // already-seeded database still backfills collections added later.
+  const existingTestimonials = await payload.find({
+    collection: 'testimonials',
+    limit: 1,
+  })
+  if (existingTestimonials.totalDocs > 0) {
+    console.log('Testimonials already seeded, skipping.')
+  } else {
+    console.log('Seeding testimonials...')
+    for (const t of TESTIMONIALS) {
+      await payload.create({
+        collection: 'testimonials',
+        data: {
+          tag: t.tag,
+          quote: t.quote,
+          name: t.name,
+          role: t.role,
+        },
+      })
+      console.log(`Testimonial: ${t.name}`)
+    }
+  }
+
+  console.log('Seed complete.')
+  process.exit(0)
+}
+
+async function seedCore(payload: Awaited<ReturnType<typeof getPayload>>) {
   console.log('Seeding...')
 
   // 1. Create author user
@@ -405,32 +429,6 @@ async function seed() {
     })
     console.log(`Post: ${post.slug}`)
   }
-
-  // 4. Seed portfolio items
-  for (const item of PORTFOLIO_ITEMS) {
-    await payload.create({
-      collection: 'portfolios',
-      data: {
-        title: item.title,
-        slug: item.slug,
-        category: item.category,
-        desc: item.desc,
-        imageUrl: item.imageUrl,
-        client: item.client,
-        duration: item.duration,
-        challenge: item.challenge.map((paragraph) => ({ paragraph })),
-        solution: item.solution,
-        solutionImageUrl: item.solutionImageUrl,
-        stats: item.stats,
-        testimonial: item.testimonial,
-        tech: item.tech.map((name) => ({ name })),
-      } as any,
-    })
-    console.log(`Portfolio: ${item.slug}`)
-  }
-
-  console.log('Seed complete.')
-  process.exit(0)
 }
 
 seed().catch((err) => {
