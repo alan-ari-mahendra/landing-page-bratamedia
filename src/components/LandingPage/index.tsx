@@ -346,21 +346,20 @@ export default async function LandingPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
               {clients.map((client) => {
                 const logoMedia = typeof client.logo === 'object' ? client.logo : null
-                const logoUrl = logoMedia?.url
-                const isExternal = logoUrl?.startsWith('http')
-                const logo = isExternal ? (
-                  <Image
-                    src={logoUrl}
-                    alt={logoMedia?.alt || client.name}
-                    width={250}
-                    height={250}
-                    className="max-h-[250px] max-w-[250px] w-auto h-auto object-contain mx-auto"
-                  />
-                ) : (
+                const hasRealFile = logoMedia?.width && logoMedia.width > 0
+                const logo = hasRealFile ? (
                   <Media
                     resource={client.logo}
                     htmlElement={null}
                     imgClassName="max-h-[250px] max-w-[250px] w-auto h-auto object-contain mx-auto"
+                  />
+                ) : (
+                  <Image
+                    src={`https://placehold.co/250x250/f2f3f1/6E766F?text=${encodeURIComponent(client.name)}`}
+                    alt={client.name}
+                    width={250}
+                    height={250}
+                    className="max-h-[250px] max-w-[250px] w-auto h-auto object-contain mx-auto"
                   />
                 )
                 return (
