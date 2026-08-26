@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import FAQAccordion from './FAQAccordion'
 
 const faqs = [
   {
@@ -26,8 +26,6 @@ const faqs = [
 ]
 
 export default function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number>(0)
-
   return (
     <section className="py-[100px] px-6 bg-[#FBE4D9]/20" id="faq">
       <div className="max-w-[800px] mx-auto">
@@ -40,44 +38,7 @@ export default function FAQSection() {
           </h2>
         </div>
 
-        <div className="space-y-0">
-          {faqs.map((faq, i) => (
-            <div key={i} className={i === 0 ? 'py-8' : 'border-t border-[#E3E5E1] py-8'}>
-              <button
-                onClick={() => setOpenIndex(openIndex === i ? -1 : i)}
-                className="w-full flex justify-between items-center text-left"
-              >
-                <span
-                  className="font-bold text-[#1a1c1c]"
-                  style={{ fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }}
-                >
-                  {faq.q}
-                </span>
-                <span
-                  className={`material-symbols-outlined text-sm opacity-50 flex-shrink-0 ml-4 transition-transform duration-300 ease-in-out ${
-                    openIndex === i ? 'rotate-180' : 'rotate-0'
-                  }`}
-                >
-                  expand_more
-                </span>
-              </button>
-              <div
-                className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
-                  openIndex === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                }`}
-              >
-                <div className="overflow-hidden">
-                  <p
-                    className="text-[#6E766F] text-[15px] leading-[24px] mt-6"
-                    style={{ fontFamily: 'var(--font-inter), sans-serif' }}
-                  >
-                    {faq.a}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <FAQAccordion faqs={faqs} />
       </div>
     </section>
   )

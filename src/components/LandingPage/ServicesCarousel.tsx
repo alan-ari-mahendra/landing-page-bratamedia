@@ -4,31 +4,26 @@ import { useState, useRef, useEffect } from 'react'
 
 const services = [
   {
-    num: '01',
     icon: 'web',
     title: 'Web App Development',
     desc: 'Sistem dan dashboard custom yang dibangun sesuai alur kerja bisnis Anda, bukan template siap pakai.',
   },
   {
-    num: '02',
     icon: 'smartphone',
     title: 'Mobile App Development',
     desc: 'Aplikasi Android dan iOS untuk mendukung operasional atau layanan pelanggan Anda.',
   },
   {
-    num: '03',
     icon: 'campaign',
     title: 'Landing Page & Branding',
     desc: 'Halaman promosi dan identitas visual yang dirancang untuk satu tujuan: mengubah pengunjung jadi calon klien.',
   },
   {
-    num: '04',
     icon: 'smart_toy',
     title: 'AI & Automation',
     desc: 'Integrasi AI dan otomatisasi alur kerja untuk mengurangi pekerjaan manual yang berulang.',
   },
   {
-    num: '05',
     icon: 'language',
     title: 'Web Application',
     desc: 'Website perusahaan, company profile, dan portal informasi yang cepat dan mudah ditemukan di Google.',
@@ -92,19 +87,11 @@ export default function ServicesCarousel() {
             >
               {services.map((svc) => (
                 <div
-                  key={svc.num}
+                  key={svc.title}
                   className="flex-none w-full md:w-[calc(33.333%-1.33rem)] bg-white border border-[#E3E5E1] p-8 rounded-xl hover:shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow"
                 >
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="w-12 h-12 bg-[#FBE4D9] rounded-lg flex items-center justify-center">
-                      <span className="material-symbols-outlined text-[#E8592C]">{svc.icon}</span>
-                    </div>
-                    <span
-                      className="text-[#6E766F] font-bold opacity-50"
-                      style={{ fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }}
-                    >
-                      {svc.num}
-                    </span>
+                  <div className="w-12 h-12 bg-[#FBE4D9] rounded-lg flex items-center justify-center mb-6">
+                    <span className="material-symbols-outlined text-[#E8592C]">{svc.icon}</span>
                   </div>
                   <h3
                     className="text-xl font-bold text-[#1a1c1c] mb-3"

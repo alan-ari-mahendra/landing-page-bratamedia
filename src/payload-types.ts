@@ -72,6 +72,8 @@ export interface Config {
     portfolios: Portfolio;
     clients: Client;
     testimonials: Testimonial;
+    'service-areas': ServiceArea;
+    'pricing-tiers': PricingTier;
     media: Media;
     categories: Category;
     users: User;
@@ -97,6 +99,8 @@ export interface Config {
     portfolios: PortfoliosSelect<false> | PortfoliosSelect<true>;
     clients: ClientsSelect<false> | ClientsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    'service-areas': ServiceAreasSelect<false> | ServiceAreasSelect<true>;
+    'pricing-tiers': PricingTiersSelect<false> | PricingTiersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -887,6 +891,180 @@ export interface Testimonial {
   createdAt: string;
 }
 /**
+ * Landing page SEO/GEO per kota untuk layanan pembuatan website.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-areas".
+ */
+export interface ServiceArea {
+  id: number;
+  /**
+   * Contoh: "Jakarta".
+   */
+  cityName: string;
+  /**
+   * Contoh: "DKI Jakarta".
+   */
+  provinceName: string;
+  heroHeadline: string;
+  heroSubheadline?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * PENTING: jangan pernah mengklaim kantor/tim fisik di luar Semarang. Gunakan framing "tim berbasis di Semarang, bekerja remote untuk [Kota]".
+   */
+  localPositioning: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  coverageIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  coverageAreas?:
+    | {
+        area: string;
+        id?: string | null;
+      }[]
+    | null;
+  nearbyCities?: (number | ServiceArea)[] | null;
+  industriesServed?:
+    | {
+        name: string;
+        description?: string | null;
+        icon?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  proofPoints?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  scopeIncluded?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  scopeOptional?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  testimonials?:
+    | {
+        quote: string;
+        name: string;
+        role: string;
+        company?: string | null;
+        /**
+         * Centang jika ini format contoh, bukan testimoni klien sungguhan. Akan menampilkan badge "Sample testimonial format" di halaman.
+         */
+        isPlaceholder?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqs?:
+    | {
+        question: string;
+        /**
+         * Mulai dengan kalimat jawaban langsung (direct-answer-first-sentence) untuk keterbacaan AI/GEO.
+         */
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Kosongkan untuk menampilkan semua paket harga default.
+   */
+  pricingOverride?: (number | PricingTier)[] | null;
+  /**
+   * Kosongkan untuk memakai headline default.
+   */
+  closingCtaHeadline?: string | null;
+  ogImage?: (number | null) | Media;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Paket harga bersama yang dipakai di seluruh halaman layanan kota.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-tiers".
+ */
+export interface PricingTier {
+  id: number;
+  /**
+   * Contoh: "Starter", "Business", "Enterprise".
+   */
+  tierName: string;
+  /**
+   * Contoh: "Mulai dari Rp 5.000.000" atau "Custom".
+   */
+  priceLabel: string;
+  description?: string | null;
+  features?:
+    | {
+        feature: string;
+        id?: string | null;
+      }[]
+    | null;
+  isPopular?: boolean | null;
+  /**
+   * Angka lebih kecil tampil lebih dulu.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1095,6 +1273,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'testimonials';
         value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'service-areas';
+        value: number | ServiceArea;
+      } | null)
+    | ({
+        relationTo: 'pricing-tiers';
+        value: number | PricingTier;
       } | null)
     | ({
         relationTo: 'media';
@@ -1409,6 +1595,99 @@ export interface TestimonialsSelect<T extends boolean = true> {
   name?: T;
   role?: T;
   initials?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-areas_select".
+ */
+export interface ServiceAreasSelect<T extends boolean = true> {
+  cityName?: T;
+  provinceName?: T;
+  heroHeadline?: T;
+  heroSubheadline?: T;
+  localPositioning?: T;
+  coverageIntro?: T;
+  coverageAreas?:
+    | T
+    | {
+        area?: T;
+        id?: T;
+      };
+  nearbyCities?: T;
+  industriesServed?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  proofPoints?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  scopeIncluded?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  scopeOptional?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  testimonials?:
+    | T
+    | {
+        quote?: T;
+        name?: T;
+        role?: T;
+        company?: T;
+        isPlaceholder?: T;
+        id?: T;
+      };
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  pricingOverride?: T;
+  closingCtaHeadline?: T;
+  ogImage?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-tiers_select".
+ */
+export interface PricingTiersSelect<T extends boolean = true> {
+  tierName?: T;
+  priceLabel?: T;
+  description?: T;
+  features?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  isPopular?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1979,6 +2258,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'service-areas';
+          value: number | ServiceArea;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

@@ -1,10 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
 const H = { fontFamily: 'var(--font-plus-jakarta-sans), sans-serif' }
 const B = { fontFamily: 'var(--font-inter), sans-serif' }
 
-export default function Footer({ activePage }: { activePage?: string }) {
+export default async function Footer({ activePage }: { activePage?: string }) {
   const navLinks = [
     { label: 'Beranda', href: '/' },
     { label: 'Layanan', href: '/#layanan' },
@@ -20,10 +22,22 @@ export default function Footer({ activePage }: { activePage?: string }) {
     'Desain UI/UX',
   ]
 
+  const payload = await getPayload({ config })
+  const { docs: cities } = await payload
+    .find({
+      collection: 'service-areas',
+      where: { _status: { equals: 'published' } },
+      sort: 'cityName',
+      limit: 20,
+      depth: 0,
+      select: { slug: true, cityName: true },
+    })
+    .catch(() => ({ docs: [] as { slug: string; cityName: string }[] }))
+
   return (
     <footer className="bg-[#f9f9f8] border-t border-[#E3E5E1] pt-16 pb-8 px-6">
       <div className="max-w-[1180px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-12">
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-2 text-xl font-bold text-[#1a1c1c] mb-4" style={H}>
@@ -78,6 +92,25 @@ export default function Footer({ activePage }: { activePage?: string }) {
               })}
             </ul>
           </div>
+
+          {/* Area Layanan */}
+          {cities.length > 0 && (
+            <div>
+              <h4 className="font-bold text-[#1a1c1c] mb-4" style={H}>Area Layanan</h4>
+              <ul className="space-y-2 text-sm text-[#6E766F]" style={B}>
+                {cities.map((c) => (
+                  <li key={c.slug}>
+                    <Link
+                      href={`/layanan/website/${c.slug}`}
+                      className="hover:text-[#E8592C] transition-colors"
+                    >
+                      Jasa Website {c.cityName}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Kontak */}
           <div>

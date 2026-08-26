@@ -11,6 +11,8 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Portfolios } from './collections/Portfolios'
 import { Posts } from './collections/Posts'
+import { PricingTiers } from './collections/PricingTiers'
+import { ServiceAreas } from './collections/ServiceAreas'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
 import { contactSubmitEndpoint } from './endpoints/contactSubmit'
@@ -68,7 +70,18 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Portfolios, Clients, Testimonials, Media, Categories, Users],
+  collections: [
+    Pages,
+    Posts,
+    Portfolios,
+    Clients,
+    Testimonials,
+    ServiceAreas,
+    PricingTiers,
+    Media,
+    Categories,
+    Users,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'no-reply@bratamedia.com',
