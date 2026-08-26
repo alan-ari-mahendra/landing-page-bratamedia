@@ -42,7 +42,7 @@ export default async function LandingPage() {
 
       <main className="pt-20">
         {/* ── 1. Hero ── */}
-        <section className="py-[100px] px-6 overflow-hidden relative bg-pink-300">
+        <section className="py-[100px] px-6 overflow-hidden relative">
           <div className="max-w-[1180px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left */}
             <div className="flex flex-col gap-8 z-10">
