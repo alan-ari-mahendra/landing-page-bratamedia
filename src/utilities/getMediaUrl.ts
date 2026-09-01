@@ -23,14 +23,19 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
  * plain-text URL field or as a Payload `upload` relationship. The upload field is
  * only populated as a full object when queried with sufficient `depth` — falls back
  * to empty string if neither is available.
+ *
+ * The uploaded media takes priority over the plain-text URL: uploads are always
+ * validated and served through Payload's media pipeline, while a hand-typed URL can
+ * point at a path that was never actually created (e.g. leftover seed data).
  */
 export const resolveImageUrl = (
   explicitUrl: string | null | undefined,
   upload: number | { url?: string | null; updatedAt?: string | null } | null | undefined,
 ): string => {
-  if (explicitUrl) return explicitUrl
   if (upload && typeof upload === 'object') {
-    return getMediaUrl(upload.url, upload.updatedAt)
+    const uploadUrl = getMediaUrl(upload.url, upload.updatedAt)
+    if (uploadUrl) return uploadUrl
   }
+  if (explicitUrl) return explicitUrl
   return ''
 }
